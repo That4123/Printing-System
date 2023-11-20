@@ -9,6 +9,7 @@ import Header from './components/shared/header'
 import Homepage from './components/homepage/homepage';
 import NoPage from './components/nopage/nopage';
 import SignIn from './components/signin/signin'
+import PrintingFile from './components/print_file/print_file';
 import axios from 'axios'
 import PrivateRoutes from './components/shared/private_routes';
 import ProtectedTest from './components/(test_only)protected_test/protected_test';
@@ -23,6 +24,7 @@ function App() {
         <Route path='signin' element={<SignIn />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='publicTest' element={<PublicTest />} />
+        <Route path='PrintingFile' element={<PrintingFile/>} />
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />
         </Route>
