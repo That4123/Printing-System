@@ -12,7 +12,7 @@ const signinRoute = require('./routes/signin');
 const protectedTestRoute = require("./routes/protected_test");
 const registrationRoute = require("./routes/registration");
 const publicTestRoute = require("./routes/public_test");
-
+const printFile = require("./routes/print_file")
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -52,5 +52,6 @@ app.use("/api/register", registrationRoute);
 
 app.use("/api/publicTest", publicTestRoute);
 
+app.use("/api/printFile",printFile);
 
 app.listen(8080);
