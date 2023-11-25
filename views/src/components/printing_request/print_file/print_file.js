@@ -52,7 +52,7 @@ const PrintingFile = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
-    console.log(completeState);
+    console.log("completeState: ",completeState);
     axios.post("/api/printfile", {
       completeState,
     })

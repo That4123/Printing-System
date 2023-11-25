@@ -7,17 +7,7 @@ module.exports = {
         printer.getPrinterList(res)
     },
     makePrintRequest: function (req, res) {
-        /*let print_request = new PrintRequest(
-            req.body.sharedState.file_name,
-            req.body.sharedState.file_path,
-            req.body.sharedState.printer_id,
-            'A3',
-            '1-10',
-            true,
-            34
-        )*/
         student.makePrintRequest(req.body.completeState, res)
-       
     }
 
 }
