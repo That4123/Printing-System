@@ -1,5 +1,4 @@
 
-import Homepage from '../../homepage/homepage.js';
 import FileUpload from '../file_upload/file_upload.js';
 import ChoosePrinter from '../choose_printer/choose_printer.js';
 import PrintingConfig from '../print_config/print_config.js';
@@ -10,12 +9,16 @@ import axios from 'axios';
 const PrintingFile = () => {
   const [currentPage, setCurrentPage] = useState('upload');
   const [sharedState, setSharedState] = useState({
-    printer_id: '',
+    printer_id: 1,
     file_path: '',
     file_name: '',
-  
-
+    paper_size:'',
+    pages_to_print:'',
+    is_double_side:'',
+    number_of_copies:'',
+    print_type:'',
   });
+  const [completeState,setCompleteState]=useState();
   const handleValueChange = (name, value) => {
     setSharedState(prevState => ({
       ...prevState,
@@ -26,26 +29,19 @@ const PrintingFile = () => {
     switch (currentPage) {
       case 'upload':
         return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
-      case 'printer':
-        return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
+        break;
+        case 'printer':
+        // return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
+        break;
       case 'config':
-        return <PrintingConfig/>;
+        return <PrintingConfig sharedState={sharedState}
+         setSharedState={handleValueChange} setCompleteState={setCompleteState}/>;
+        break;
       default:
-        return <FileUpload />;
+        return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
     }
   };  
   const [isModalOpen, setModalOpen] = useState(false);
-  const handleSubmit = () => {
-    axios.post("/api/printfile", {
-      sharedState,
-    })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            console.error("Error!!!!!!", error);
-        })
-  }
   const openModal = () => {
     setModalOpen(true);
   };
@@ -53,6 +49,23 @@ const PrintingFile = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const [errorMessage, setErrorMessage] = useState(null);
+  const handleSubmit = () => {
+    console.log(completeState);
+    axios.post("/api/printfile", {
+      completeState,
+    })
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+          if (error.response) {
+            setErrorMessage(error.response.data.message);
+          }
+        })
+  }
+  
 
   return (
     <div>
@@ -71,6 +84,7 @@ const PrintingFile = () => {
                     <Modal className={"popup-confirm-config"} overlayClassName={"cfm-config-ctn"}
                         isOpen={isModalOpen}
                         onRequestClose={closeModal}
+                        ariaHideApp={false}
                     >
                         <h2>Xác nhận in ấn</h2>
                         <div className='upload-file-ctn'>

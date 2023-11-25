@@ -4,21 +4,24 @@ module.export = class PrintRequest{
     chosenPrinter;
     paperSize;
     pagesToPrint;
-    isDoubleSize;
+    isDoubleSide;
     numberOfCopies;
+    printType;
     constructor(fileName,
         pathToUploadFile,
         chosenPrinter,
         paperSize,
         pagesToPrint,
-        isDoubleSize,
-        numberOfCopies){
+        isDoubleSide,
+        numberOfCopies,
+        printType){
             this.fileName = fileName;
             this.pathToUploadFile = pathToUploadFile;
             this.chosenPrinter = chosenPrinter; 
             this.paperSize = paperSize;
             this.pagesToPrint = pagesToPrint;
-            this.isDoubleSize = isDoubleSize;
+            this.isDoubleSide = isDoubleSide;
             this.numberOfCopies = numberOfCopies;
+            this.printType = printType
     }
 }

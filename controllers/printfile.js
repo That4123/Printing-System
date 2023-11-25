@@ -16,7 +16,7 @@ module.exports = {
             true,
             34
         )*/
-        student.makePrintRequest(req.body.sharedState, res)
+        student.makePrintRequest(req.body.completeState, res)
        
     }
 
