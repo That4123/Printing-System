@@ -1,5 +1,5 @@
 const path = require("path");
-const printer = require('../model/DAO/printer_DAO');
+const printer = require('../model/DAO/Printer_DAO');
 const student = require('../model/DAO/student_DAO');
 const PrintRequest = require('../model/DTO/print_request');
 const authorization_model = require('../model/DAO/authorization');
