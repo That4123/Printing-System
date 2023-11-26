@@ -13,6 +13,7 @@ const protectedTestRoute = require("./routes/protected_test");
 const registrationRoute = require("./routes/registration");
 const publicTestRoute = require("./routes/public_test");
 const viewAllPrinterRoute = require("./routes/ViewAllPrinter");
+const viewPrinterInfo = require("./routes/ViewPrinterInformation");
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -52,7 +53,9 @@ app.use("/api/register", registrationRoute);
 
 app.use("/api/publicTest", publicTestRoute);
 
-app.use("/api/viewAllPrinter", viewAllPrinterRoute)
+app.use("/api/viewAllPrinter", viewAllPrinterRoute);
+
+app.use("/api/viewPrinterInfo", viewPrinterInfo);
 
 
 app.listen(8080);
