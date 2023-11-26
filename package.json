@@ -17,6 +17,7 @@
     "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
-    "mysql2": "^3.6.4"
+    "mysql2": "^3.6.4",
+    "react-modal": "^3.16.1"
   }
 }
