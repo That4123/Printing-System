@@ -6,27 +6,13 @@ import { useState, useEffect } from "react";
 import Modal from 'react-modal';
 import "./print_config.css"
 
-const PrintingConfig=({ sharedState, setSharedState, setCompleteState }) => {
+const PrintingConfig=({ sharedState, setSharedState }) => {
     const navigate = useNavigate();
     
     const handleChange = (event,name) => setSharedState(name, event.target.value);
     const toggleActive = (value) => setSharedState("is_double_side", value);
 
-    const [isModalOpen, setModalOpen] = useState(false);
-    const openModal = () => {
-        setModalOpen(true);
-    };
-    const closeModal = () => {
-        setModalOpen(false);  
-    };
 
-    const handleComplete = () =>{
-        // onValueChange('paper_size',paper_size);
-        // onValueChange('is_double_side',(is_double_side===2));
-        console.log(sharedState);
-        setCompleteState(sharedState);
-        openModal();
-    }
     
 
   return (
@@ -74,21 +60,7 @@ const PrintingConfig=({ sharedState, setSharedState, setCompleteState }) => {
                     <option value="In thường">In thường</option>
                 </select>
             </div>
-            <div className="attribute-config side-page-config">
-                <button value="1" className="back-btn">Quay lại</button>
-                <button value="2" className="complete-btn" onClick={()=>{handleComplete();}}>Hoàn thành</button>
-                    <Modal className={"popup-complete-config"} overlayClassName={"complete-config-ctn"}
-                        isOpen={isModalOpen}
-                        onRequestClose={closeModal}
-                        ariaHideApp={false}
-                    >
-                        <h2>Thông báo</h2>
-                        <span className="span-complete-config">
-                            <p className="complete-noti-content">Thiết lập cấu hình in thành công</p>
-                            <button onClick={closeModal} className="complete-noti-btn">OK</button>
-                        </span>
-                    </Modal>
-            </div>
+            
         </div>
     </>
   );

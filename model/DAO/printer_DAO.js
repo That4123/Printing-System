@@ -10,17 +10,6 @@ function getPrinterList(res) {
                 res.status(400).json({ message: "Không có máy in" });
             }
             else {
-                
-                listPrinter = []
-                for (let i = 0; i < result.length; i++){
-                    const printer_ = new printer(result[i].printer_id, result[i].brand, result[i].model, result[i].description,
-                        result[i].campusName, result[i].roomNumber, result[i].buildingName, result[i].printer_status)
-                    listPrinter.append(printer_);
-                    console.log(printer_)
-                }
-                res.json(listPrinter)
-                
-            
                 res.json(result);
             }
         })

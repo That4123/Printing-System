@@ -19,5 +19,24 @@ function makePrintRequest(req, res) {
             }
         })
 }
+function checkNoEmpty(obj) {
+    for (let key in obj) {
+        if (obj[key] === undefined || obj[key] === null || obj[key] === "") {
+            return false;
+        }
+    }
+    return true;
+}
+function checkValidNumberOfCopies(obj){
+    if (/^\d+$/.test(obj.number_of_copies)) return true;
+    return false;
+}
+function checkValidPagesToPrint(obj){
+    if (/^(\d+(-\d+)?)(,\d+(-\d+)?)*$/.test(obj.pages_to_print)) return true;
+    return false;
+}
 module.exports = {
-    makePrintRequest}
+    makePrintRequest,
+    checkNoEmpty,
+    checkValidNumberOfCopies,
+    checkValidPagesToPrint}
