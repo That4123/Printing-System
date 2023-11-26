@@ -1,35 +1,62 @@
 import "./file_upload.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import {useState } from "react";
+import {useState, useEffect } from "react";
 import Modal from 'react-modal'
+import axios from "axios";
+
 function FileUpload({ value, onValueChange }){
     const [selectedFileName, setSelectedFileName] = useState('Chưa có file được chọn');
-    const permittedFileType = ["pdf", "img", "jpg"];
+    const [permittedFileType, setPermittedFileType] = useState([])
     const getExtension = (filename) => {
         return filename.split('.').pop()
       }
-        
-      
-    const [checkFileType, setCheckFileType] = useState(true)
+    
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [checkFileType, setCheckFileType] = useState(true);
+    const [checkFileSize, setCheckFileSize] = useState(true);
+    useEffect(() => {
+        axios.get('/api/uploadFile/permittedFileType')
+          .then((respond) => {
+            setPermittedFileType(respond.data.list)
+          })
+          .catch((error) => {
+            console.error("Error!!!!!!", error)
+          })
+      }, []);
     const handleFileChange = (event) => {
-    const files = event.target.files;
-        if (files.length > 0) {
-        setSelectedFileName(files[0].name);
-        } else {
-        setSelectedFileName('');
-        }
-        onValueChange('file_name', files[0].name);
-        onValueChange('file_path', files[0].size);
-        if (!permittedFileType.includes(getExtension(files[0].name))){
-            setCheckFileType(false)
-        }
-        else {
-            
-        }
+        const files = event.target.files;
+        const obj = {file_type: getExtension(files[0].name), file_size: files[0].size}
+        axios.post("/api/uploadfile/permittedFileType", {
+            obj,
+          })
+              .then((response) => {
+                  console.log(response.data.message)
+                  if (response.data.message === "Loại tệp tin không hợp lệ"){
+                    event.target.files = null;
+                    setCheckFileType(false);
+                  }
+                  else if (response.data.message === "Kích thước tệp đạt quá giới hạn"){
+                    event.target.files = null;
+                    setCheckFileSize(false);
+                  }
+                  else {
+                    onValueChange('file_name', files[0].name);
+                    onValueChange('file_path', files[0].name);
+                    setSelectedFileName(files[0].name);
+                  }
+                    
+              })
+              .catch((error) => {
+                if (error.response) {
+                  setErrorMessage(error.response.data.message);
+                }
+              })
+    
     };
     const handleToClose = () => {
         setCheckFileType(true);
+        setCheckFileSize(true);
     };
     return(
         <div>
@@ -54,9 +81,27 @@ function FileUpload({ value, onValueChange }){
                 contentLabel="Example Modal"
                 onRequestClose={handleToClose}
                 className={"popup-complete-config"} overlayClassName={"complete-config-ctn"}
+                ariaHideApp={false}
             >
                 <div>Thông báo</div>
                 <div>Loại tệp tin không hợp lệ</div>
+                <div>Các loại tệp tin hợp lệ: </div>
+                <div style = {{display: 'flex', justifyContent: 'space-around', width: '50%', marginLeft: '25%'}}>
+                    {permittedFileType.map((fileType, index) => (
+                        <div key={index}>{fileType}</div>
+                    ))}
+                </div>
+            </Modal>
+            <Modal
+                isOpen={!checkFileSize}
+                contentLabel="Example Modal"
+                onRequestClose={handleToClose}
+                className={"popup-complete-config"} overlayClassName={"complete-config-ctn"}
+                ariaHideApp={false}
+            >
+                <div>Thông báo</div>
+                <div>Kích thước đã đạt quá giới hạn</div>
+                
                
             </Modal>
 </div>

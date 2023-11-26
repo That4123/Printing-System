@@ -37,6 +37,7 @@ const ChoosePrinter = ({ value, onValueChange }) => {
   };
   const [showDetail, setShowDetail] = useState(false)
   const [numberPrinter, setNumber] = useState(0)
+  const [numberPrinterDetail, setPrinterDetail] = useState(0)
   const [showChoosePrinter, setShowChoosePrinter] = useState(false)
   return (
     <>
@@ -77,7 +78,7 @@ const ChoosePrinter = ({ value, onValueChange }) => {
                 <div className="name-printer"> Máy in {card.printer_id} </div>
                 </div>
                 <div className="btn-area">
-                    <button type="button" className="btn btn-dark" onClick={() => {setNumber(i); setShowDetail(true)}}>Xem</button>
+                    <button type="button" className="btn btn-dark" onClick={() => {setPrinterDetail(i); setShowDetail(true)}}>Xem</button>
                     <button type="button" className="btn btn-dark" style = {{backgroundColor: "#9999FF", border: "none"}}  onClick={() => {setNumber(i); setShowChoosePrinter(true); setShowDetail(false); handleChange(card.printer_id);}}>Chọn</button>
                 </div>
             </div>
@@ -89,23 +90,23 @@ const ChoosePrinter = ({ value, onValueChange }) => {
             <img src={arrowLTR}  alt ={"arrowLTR"}/>
         </button>
     </div>
-    {showDetail && listPrinter[numberPrinter] && (
-    <div className="info-printer" key={numberPrinter}>
-      <img src={printerFill} alt={`Printer ${numberPrinter}`} />
+    {showDetail && listPrinter[numberPrinterDetail] && (
+    <div className="info-printer" key={numberPrinterDetail}>
+      <img src={printerFill} alt={`Printer ${numberPrinterDetail}`} />
       <div className="info-printer-name">
         <div style={{ fontSize: "30px", fontWeight: "700", marginLeft: "5vw" }}>
-          Máy in {listPrinter[numberPrinter].printer_id}
+          Máy in {listPrinter[numberPrinterDetail].printer_id}
         </div>
         <div className="info-printer-text">
           <div className="info-printer-text-1">
-            <div>Tên thương hiệu: {listPrinter[numberPrinter].brand}</div>
-            <div>Mẫu: {listPrinter[numberPrinter].model}</div>
-            <div>Cơ sở: {listPrinter[numberPrinter].campusName}</div>
-            <div>Phòng: {listPrinter[numberPrinter].roomNumber}</div>
+            <div>Tên thương hiệu: {listPrinter[numberPrinterDetail].brand}</div>
+            <div>Mẫu: {listPrinter[numberPrinterDetail].model}</div>
+            <div>Cơ sở: {listPrinter[numberPrinterDetail].campusName}</div>
+            <div>Phòng: {listPrinter[numberPrinterDetail].roomNumber}</div>
           </div>
           <div className="info-printer-text-1">
-            <div>Mô tả: {listPrinter[numberPrinter].description}</div>
-            <div>Tình trạng: {listPrinter[numberPrinter].printer_status}</div>
+            <div>Mô tả: {listPrinter[numberPrinterDetail].description}</div>
+            <div>Tình trạng: {listPrinter[numberPrinterDetail].printer_status}</div>
           </div>
         </div>
       </div>

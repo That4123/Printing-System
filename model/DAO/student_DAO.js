@@ -19,5 +19,14 @@ function makePrintRequest(req, res) {
             }
         })
 }
+function checkNoEmpty(obj) {
+    for (let key in obj) {
+        if (obj[key] === undefined || obj[key] === null || obj[key] === "") {
+            return false;
+        }
+    }
+    return true;
+}
 module.exports = {
-    makePrintRequest}
+    makePrintRequest,
+    checkNoEmpty}

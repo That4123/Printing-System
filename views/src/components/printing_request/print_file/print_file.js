@@ -1,9 +1,9 @@
-
 import FileUpload from '../file_upload/file_upload.js';
 import ChoosePrinter from '../choose_printer/choose_printer.js';
 import PrintingConfig from '../print_config/print_config.js';
 import { useState } from 'react';
 import "./print_file.css"
+import "../print_config/print_config.css"
 import Modal from 'react-modal'
 import axios from 'axios';
 const PrintingFile = () => {
@@ -18,7 +18,7 @@ const PrintingFile = () => {
     number_of_copies:'',
     print_type:'',
   });
-  const [completeState,setCompleteState]=useState();
+  const [completeState,setCompleteState]=useState(sharedState);
   const handleValueChange = (name, value) => {
     setSharedState(prevState => ({
       ...prevState,
@@ -31,11 +31,12 @@ const PrintingFile = () => {
         return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
         break;
         case 'printer':
-        // return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
+         return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
         break;
       case 'config':
         return <PrintingConfig sharedState={sharedState}
-         setSharedState={handleValueChange} setCompleteState={setCompleteState}/>;
+          setSharedState={handleValueChange} 
+          handleSubmit={handleSubmit}/>;
         break;
       default:
         return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
@@ -50,14 +51,40 @@ const PrintingFile = () => {
     setModalOpen(false);
   };
 
+  const [isModalCompleteOpen, setModalCompleteOpen] = useState(false);
+
+  const handleComplete = () =>{
+      // onValueChange('paper_size',paper_size);
+      // onValueChange('is_double_side',(is_double_side===2));
+    console.log(sharedState);
+    console.log("completeState: ",completeState);
+    axios.post("/api/printfile/makeUpdateRequest", {
+      sharedState,
+    })
+        .then((response) => {
+            console.log(response);
+            setCompleteState(sharedState);
+            setModalCompleteOpen(true);
+            setErrorMessage();
+        })
+        .catch((error) => {
+          if (error.response) {
+            setErrorMessage(error.response.data.message);
+          }
+        })
+      
+  }
+
   const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
-    console.log("completeState: ",completeState);
-    axios.post("/api/printfile", {
+    axios.post("/api/printfile/makePrintRequest", {
       completeState,
     })
         .then((response) => {
             console.log(response);
+            setCompleteState(sharedState);
+            setModalCompleteOpen(true);
+            setErrorMessage();
         })
         .catch((error) => {
           if (error.response) {
@@ -65,6 +92,7 @@ const PrintingFile = () => {
           }
         })
   }
+
   
 
   return (
@@ -111,11 +139,11 @@ const PrintingFile = () => {
                         <label className='selected-printer-confirm-lb'>Cấu hình in</label>
                         <div className='selected-printer-confirm-ctn'>
                           <div className='slt-cfg-cfm-left'>
-                            <p className='cfm-config-p'>Khổ giấy: A4</p>
-                            <p className='cfm-config-p'>In hai mặt</p>
-                            <p className='cfm-config-p'>Số bản in: 1</p>
-                            <p className='cfm-config-p'>Trang in: 1-3,5,9-11</p>
-                            <p className='cfm-config-p'>Loại in: In màu</p>
+                            <p className='cfm-config-p'>Khổ giấy: {completeState.paper_size}</p>
+                            <p className='cfm-config-p'>{ (completeState.is_double_side)? 'In hai mặt':'In một mặt'}</p>
+                            <p className='cfm-config-p'>Số bản in: {completeState.number_of_copies}</p>
+                            <p className='cfm-config-p'>Trang in: {completeState.pages_to_print}</p>
+                            <p className='cfm-config-p'>Loại in: {completeState.print_type}</p>
                           </div>
                         </div>
                         <div className='btn-ctn-cfm-cfg'>
@@ -127,8 +155,35 @@ const PrintingFile = () => {
         </div>
       <div>
         {renderPage()}
-        {console.log(sharedState.printer_id)}
-        {console.log(sharedState.file_path)}
+        {currentPage === 'config' && (
+          <div className='config-container'>
+            <div className="attribute-config side-page-config">
+              <button value="1" className="back-btn">
+                Quay lại
+              </button>
+              <button value="2" className="complete-btn" onClick={() => handleComplete()}>
+                Hoàn thành
+              </button>
+              <Modal
+                className={"popup-complete-config"}
+                overlayClassName={"complete-config-ctn"}
+                isOpen={isModalCompleteOpen}
+                onRequestClose={() => setModalCompleteOpen(false)}
+                ariaHideApp={false}
+              >
+                <h2>Thông báo</h2>
+                <span className="span-complete-config">
+                  <p className="complete-noti-content">Thiết lập cấu hình in thành công</p>
+                  <button onClick={() => setModalCompleteOpen(false)} className="complete-noti-btn">
+                    OK
+                  </button>
+                </span>
+              </Modal>
+            </div>
+            <p>{errorMessage ? errorMessage : ""}</p>
+          </div>
+        )}
+        
       </div>
     </div>
   );
