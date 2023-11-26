@@ -14,6 +14,7 @@ import PrivateRoutes from './components/shared/private_routes';
 import ProtectedTest from './components/(test_only)protected_test/protected_test';
 import PublicTest from './components/(test_only)public_test/public_test';
 import SignUp from './components/signup/signup';
+import PringtingQueue from './components/printing-queue/printing-queue';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path='publicTest' element={<PublicTest />} />
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />
+          <Route path='printing-queue' element={<PringtingQueue />} />
         </Route>
         <Route path="*" element={<NoPage />} />
       </Route>

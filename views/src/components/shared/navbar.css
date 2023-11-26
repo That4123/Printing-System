@@ -4,8 +4,7 @@
     align-items: center;
     justify-content: space-between;
     justify-items: stretch;
-    
-    flex: 1;
+    flex-direction: row;
 }
 nav.navbar.container-fluid
 {
