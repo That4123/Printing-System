@@ -1,12 +1,17 @@
 import FileUpload from '../file_upload/file_upload.js';
 import ChoosePrinter from '../choose_printer/choose_printer.js';
 import PrintingConfig from '../print_config/print_config.js';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link, NavLink, Outlet, Navigate, useNavigate } from "react-router-dom";
 import "./print_file.css"
 import "../print_config/print_config.css"
 import Modal from 'react-modal'
 import axios from 'axios';
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 const PrintingFile = () => {
+  const token = cookies.get("TOKEN");
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState('upload');
   const [sharedState, setSharedState] = useState({
     printer_id: 1,
@@ -60,6 +65,10 @@ const PrintingFile = () => {
     console.log("completeState: ",completeState);
     axios.post("/api/printfile/makeUpdateRequest", {
       sharedState,
+    },{
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
     })
         .then((response) => {
             console.log(response);
@@ -79,12 +88,13 @@ const PrintingFile = () => {
   const handleSubmit = () => {
     axios.post("/api/printfile/makePrintRequest", {
       completeState,
+    },{
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
     })
         .then((response) => {
-            console.log(response);
-            setCompleteState(sharedState);
-            setModalCompleteOpen(true);
-            setErrorMessage();
+            // console.log("user_id:",response);
         })
         .catch((error) => {
           if (error.response) {

@@ -14,6 +14,8 @@ import PrivateRoutes from './components/shared/private_routes';
 import ProtectedTest from './components/(test_only)protected_test/protected_test';
 import PublicTest from './components/(test_only)public_test/public_test';
 import SignUp from './components/signup/signup';
+import ViewAllPrinter from './components/manage_printer/ViewAllPrinter';
+import ViewPrinterInformation from './components/manage_printer/ViewPrinterInformation'
 import FileUpload from './components/printing_request/file_upload/file_upload.js';
 import ChoosePrinter from './components/printing_request/choose_printer/choose_printer.js';
 import PrintFile from './components/printing_request/print_file/print_file.js'
@@ -24,13 +26,13 @@ function App() {
         <Route index element={<Homepage />} />
         <Route path='signin' element={<SignIn />} />
         <Route path='signup' element={<SignUp />} />
-        <Route path='fileupload' element={<FileUpload />} />
-        <Route path='chooseprinter' element={<ChoosePrinter />} />
         <Route path='printfile' element={<PrintFile />} />
         <Route path='publicTest' element={<PublicTest />} />
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />
         </Route>
+        <Route path='viewAllPrinter' element={<ViewAllPrinter />} />
+        <Route path='viewPrinterInformation/:PrinterId' element={<ViewPrinterInformation />} />
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>

@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route, Link, NavLink, Outlet, Navigate, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
@@ -6,7 +5,7 @@ import { useState, useEffect } from "react";
 import Modal from 'react-modal';
 import "./print_config.css"
 
-const PrintingConfig=({ sharedState, setSharedState, handleSubmit }) => {
+const PrintingConfig=({ sharedState, setSharedState }) => {
     const navigate = useNavigate();
     
     const handleChange = (event,name) => setSharedState(name, event.target.value);

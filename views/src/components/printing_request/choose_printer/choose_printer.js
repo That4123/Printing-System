@@ -20,6 +20,7 @@ const ChoosePrinter = ({ value, onValueChange }) => {
   const handleChange = (id) => {
     onValueChange('printer_id', id);
   };
+  /*
   useEffect(() => {
     axios.get('/api/chooseprinter')
       .then((respond) => {
@@ -29,6 +30,13 @@ const ChoosePrinter = ({ value, onValueChange }) => {
       .catch((error) => {
         console.error("Error!!!!!!", error);
       })
+  }, []);
+  */
+  useEffect(() => {
+    // lấy danh sách máy in từ backend
+    axios.post('/api/viewAllPrinter')
+      .then(response => setListPrinter(response.data))
+      .catch(error => console.error('Error fetching printers:', error));
   }, []);
   const scrollRight = () => {
     if (containerRef.current) {

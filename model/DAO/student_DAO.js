@@ -27,6 +27,16 @@ function checkNoEmpty(obj) {
     }
     return true;
 }
+function checkValidNumberOfCopies(obj){
+    if (/^\d+$/.test(obj.number_of_copies)) return true;
+    return false;
+}
+function checkValidPagesToPrint(obj){
+    if (/^(\d+(-\d+)?)(,\d+(-\d+)?)*$/.test(obj.pages_to_print)) return true;
+    return false;
+}
 module.exports = {
     makePrintRequest,
-    checkNoEmpty}
+    checkNoEmpty,
+    checkValidNumberOfCopies,
+    checkValidPagesToPrint}
