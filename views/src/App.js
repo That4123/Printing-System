@@ -21,6 +21,7 @@ import FileUpload from './components/printing_request/file_upload/file_upload.js
 import ChoosePrinter from './components/printing_request/choose_printer/choose_printer.js';
 import PrintFile from './components/printing_request/print_file/print_file.js'
 import PrintingRequest from './components/printing-request/printingRequest.jsx';
+import ViewPermittedFileType from './components/permitted_file_type/ViewPermittedFileType';
 
 function App() {
   return (
