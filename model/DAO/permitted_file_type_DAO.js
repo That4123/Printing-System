@@ -56,7 +56,20 @@ function getPermittedFileType(res) {
             }
         })
 }
+const getPermittedFileTypes = (callback) => {
+    const query = "SELECT * FROM permitted_file_type";
+    connect_DB.query(query, (err, result) => {
+        if (err) {
+            console.error(err);
+            callback(err, null);
+        } else {
+            callback(null, result);
+        }
+    });
+}
 module.exports = {
     checkFileSize,
     checkFileType,
-    getPermittedFileType}
+    getPermittedFileType,
+    getPermittedFileTypes
+}
