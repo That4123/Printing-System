@@ -38,6 +38,7 @@ function App() {
         </Route>
         <Route path='viewAllPrinter' element={<ViewAllPrinter />} />
         <Route path='viewPrinterInformation/:PrinterId' element={<ViewPrinterInformation />} />
+        <Route path='viewPermittedFileType' element={<ViewPermittedFileType />} />
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>
