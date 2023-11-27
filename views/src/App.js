@@ -20,6 +20,7 @@ import ViewPrinterInformation from './components/manage_printer/ViewPrinterInfor
 import FileUpload from './components/printing_request/file_upload/file_upload.js';
 import ChoosePrinter from './components/printing_request/choose_printer/choose_printer.js';
 import PrintFile from './components/printing_request/print_file/print_file.js'
+import PrintingRequest from './components/printing-request/printingRequest.jsx';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />
           <Route path='printing-queue' element={<PringtingQueue />} />
+          <Route path='printing-queue/printing-request/:pringtingReqId' element={<PrintingRequest />} />
         </Route>
         <Route path='viewAllPrinter' element={<ViewAllPrinter />} />
         <Route path='viewPrinterInformation/:PrinterId' element={<ViewPrinterInformation />} />

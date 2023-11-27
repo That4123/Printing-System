@@ -1,12 +1,9 @@
-.pringting-req-card {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: #0F172B;
-
+.float-animation {
+    transition: transform 0.3s;
 }
 
-.flex-item {
-    display: inline-block;
+.float-animation:hover {
+    transform: translateY(-5px);
+    box-shadow: 5px 5px;
+    background-color: aliceblue;
 }
