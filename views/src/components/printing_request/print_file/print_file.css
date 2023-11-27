@@ -25,10 +25,12 @@
     .config-printbtn-span .config-printbtn{
         color:black;
         background-color: #9999FF;
+        
     }
     .config-printbtn-span .config-printbtn:hover{
         background-color: #7474ff;
     }
+
 
 
 .cfm-config-ctn{

@@ -1,4 +1,3 @@
-
 import FileUpload from '../file_upload/file_upload.js';
 import ChoosePrinter from '../choose_printer/choose_printer.js';
 import PrintingConfig from '../print_config/print_config.js';
@@ -37,7 +36,7 @@ const PrintingFile = () => {
         return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
         break;
         case 'printer':
-        // return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
+         return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
         break;
       case 'config':
         return <PrintingConfig sharedState={sharedState}
@@ -195,8 +194,6 @@ const PrintingFile = () => {
           </div>
         )}
         
-        {console.log(sharedState.printer_id)}
-        {console.log(sharedState.file_path)}
       </div>
     </div>
   );

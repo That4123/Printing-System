@@ -29,8 +29,6 @@ function App() {
         <Route index element={<Homepage />} />
         <Route path='signin' element={<SignIn />} />
         <Route path='signup' element={<SignUp />} />
-        <Route path='fileupload' element={<FileUpload />} />
-        <Route path='chooseprinter' element={<ChoosePrinter />} />
         <Route path='printfile' element={<PrintFile />} />
         <Route path='publicTest' element={<PublicTest />} />
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >

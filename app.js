@@ -62,4 +62,5 @@ app.use("/api/chooseprinter", printFileRoute);
 
 app.use("/api/printfile", printFileRoute);
 
+app.use("/api/uploadfile", printFileRoute)
 app.listen(8080);
