@@ -35,7 +35,7 @@ function App() {
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />
           <Route path='printing-queue' element={<PringtingQueue />} />
-          <Route path='printing-queue/printing-request/:pringtingReqId' element={<PrintingRequest />} />
+          <Route path='printing-queue/printing-request/:request_id' element={<PrintingRequest />} />
         </Route>
         <Route path='viewAllPrinter' element={<ViewAllPrinter />} />
         <Route path='viewPrinterInformation/:PrinterId' element={<ViewPrinterInformation />} />

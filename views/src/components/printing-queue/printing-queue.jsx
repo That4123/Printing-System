@@ -4,31 +4,27 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import PringtingReqCard from "../shared/printingReqCard";
 
-const data = [
-  {
-    id: 1,
-    status: "Chờ duyệt",
-  },
-  {
-    id: 2,
-    status: "Chờ duyệt",
-  },
-  {
-    id: 3,
-    status: "Chờ duyệt",
-  },
-  {
-    id: 4,
-    status: "Chờ duyệt",
-  },
-];
-
 const PringtingQueue = () => {
+  const [printRequestList, setPrintRequestList] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/printRequest').then((res) => {
+      if (res.status === 200) {
+        setPrintRequestList(res.data)
+      }
+      else {
+        console.log("Something happen");
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }, [])
+
   return (
     <section className="container d-flex flex-column justify-content-center align-items-center mt-5">
       <p className="fs-2 fw-bold">Hàng chờ in</p>
-        {data.map((printingReq) => (
-        <PringtingReqCard id={printingReq.id} status={printingReq.status} />
+        {printRequestList.map((printingReq) => (
+        <PringtingReqCard id={printingReq.request_id} status={printingReq.request_status} />
         ))}
     </section>
   );
