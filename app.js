@@ -12,7 +12,7 @@ const signinRoute = require('./routes/signin');
 const protectedTestRoute = require("./routes/protected_test");
 const registrationRoute = require("./routes/registration");
 const publicTestRoute = require("./routes/public_test");
-const print_fileRoute = require("./routes/print_file")
+const printFileRoute = require("./routes/print_file")
 const viewAllPrinterRoute = require("./routes/ViewAllPrinter");
 const viewPrinterInfo = require("./routes/ViewPrinterInformation");
 const permittedFileTypeRoute = require("./routes/ViewPermittedFileType")
@@ -59,11 +59,11 @@ app.use("/api/viewAllPrinter", viewAllPrinterRoute);
 
 app.use("/api/viewPrinterInfo", viewPrinterInfo);
 
-app.use("/api/chooseprinter", print_fileRoute);
+app.use("/api/chooseprinter", printFileRoute);
 
-app.use("/api/print_file", print_fileRoute);
+app.use("/api/printFile", printFileRoute);
 
-app.use("/api/uploadfile", print_fileRoute)
+app.use("/api/uploadfile", printFileRoute)
 
 app.use("/api/viewPermittedFileType", permittedFileTypeRoute);
 
