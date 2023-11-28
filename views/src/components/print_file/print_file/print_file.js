@@ -63,7 +63,7 @@ const PrintingFile = () => {
       // onValueChange('is_double_side',(is_double_side===2));
     console.log(sharedState);
     console.log("completeState: ",completeState);
-    axios.post("/api/printfile/makeUpdateRequest", {
+    axios.post("/api/print_file/makeUpdateRequest", {
       sharedState,
     },{
         headers: {
@@ -86,7 +86,7 @@ const PrintingFile = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
-    axios.post("/api/printfile/makePrintRequest", {
+    axios.post("/api/print_file/makePrintRequest", {
       completeState,
     },{
         headers: {

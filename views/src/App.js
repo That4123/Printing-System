@@ -17,9 +17,9 @@ import SignUp from './components/signup/signup';
 import PringtingQueue from './components/printing-queue/printing-queue';
 import ViewAllPrinter from './components/manage_printer/ViewAllPrinter';
 import ViewPrinterInformation from './components/manage_printer/ViewPrinterInformation'
-import FileUpload from './components/printing_request/file_upload/file_upload.js';
-import ChoosePrinter from './components/printing_request/choose_printer/choose_printer.js';
-import PrintFile from './components/printing_request/print_file/print_file.js'
+import FileUpload from './components/print_file/file_upload/file_upload.js';
+import ChoosePrinter from './components/print_file/choose_printer/choose_printer.js';
+import PrintFile from './components/print_file/print_file/print_file.js'
 import PrintingRequest from './components/printing-request/printingRequest.jsx';
 import ViewPermittedFileType from './components/permitted_file_type/ViewPermittedFileType';
 
@@ -30,7 +30,7 @@ function App() {
         <Route index element={<Homepage />} />
         <Route path='signin' element={<SignIn />} />
         <Route path='signup' element={<SignUp />} />
-        <Route path='printfile' element={<PrintFile />} />
+        <Route path='printFile' element={<PrintFile />} />
         <Route path='publicTest' element={<PublicTest />} />
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />
