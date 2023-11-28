@@ -90,8 +90,16 @@ CREATE TABLE `print_request` (
   `pages_to_print` varchar(127) NOT NULL,
   `is_double_side` tinyint(1) NOT NULL,
   `number_of_copies` int(11) NOT NULL,
-  `print_type` varchar(127) NOT NULL
+  `print_type` varchar(127) NOT NULL,
+  `createdBy` int(11) NOT NULL,
+  `request_status` varchar(127) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `print_request` (`request_id`, `file_name`, `file_path`, `chosen_printer`, `paper_size`, `pages_to_print`, `is_double_side`, `number_of_copies`, `print_type`, `createdBy`, `request_status`) VALUES
+(2000000, 'text1.txt', '/printFile/text1.txt', 1, 'A4', '5', 0, 2, 'color', 2000000, 'waiting'),
+(2000001, 'text2.txt', '/printFile/text2.txt', 2, 'A4', '10', 1, 1, 'black', 2000000, 'waiting'),
+(2000002, 'text3.txt', '/printFile/text3.txt', 4, 'A4', '12', 1, 1, 'black', 2000001, 'waiting'),
+(2000003, 'text4.txt', '/printFile/text4.txt', 3, 'A4', '8', 1, 2, 'black', 2000001, 'waiting');
 
 -- --------------------------------------------------------
 
@@ -139,7 +147,6 @@ ALTER TABLE `user`
 --
 ALTER TABLE `print_request`
   ADD PRIMARY KEY (`request_id`);
-
 --
 -- Chỉ mục cho bảng `print_request`
 --
@@ -162,6 +169,11 @@ COMMIT;
 --
 ALTER TABLE `print_request`
   MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `print_request`
+	ADD FOREIGN KEY (`chosen_printer`) REFERENCES printer(`printer_id`);
+    
+ALTER TABLE `print_request`
+	ADD FOREIGN KEY (`createdBy`) REFERENCES user(`user_id`);
 COMMIT;
 
 --
