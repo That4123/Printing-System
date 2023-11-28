@@ -8,6 +8,7 @@ function getPrinterDetail(req, res) {
             res.status(err.code).json({ message: err.message });
         }
         else {
+            console.log("///////////////////////////",result[0]);
             res.json({ printer: result[0] })
         }
     })

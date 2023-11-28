@@ -53,11 +53,9 @@ module.exports = {
         }
         student.makePrintRequest(req,res)
             .then(() => {
-                console.log("//////////////////////////////////////123///////////");
                 // res.status(200).json({message:"success make request"});
             })
             .catch((error) => {
-                console.log("//////////////////////////////////////234///////////");
                 // res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
             }) 
         

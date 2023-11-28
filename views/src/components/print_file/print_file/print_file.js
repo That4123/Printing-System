@@ -47,6 +47,15 @@ const PrintingFile = () => {
         return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
     }
   };  
+  const [printerDetail,setPrinterDetail ]=useState(0);
+  useEffect(() => {
+    // lấy danh sách máy in từ backend
+    axios.post('/api/viewPrinterInfo',{
+      printer_id:completeState.printer_id,
+    })
+      .then(response => setPrinterDetail(response.data.printer))
+      .catch(error => console.error('Error fetching printers:', error));
+  }, [completeState.printer_id]);
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
@@ -127,22 +136,22 @@ const PrintingFile = () => {
                         <h2>Xác nhận in ấn</h2>
                         <div className='upload-file-ctn'>
                           <label className='upload-file-lb'>File tải lên</label>
-                          <div className='upload-file-name'>tên file</div>
+                          <div className='upload-file-name'>{completeState.file_name}</div>
                         </div>
                         <label className='selected-printer-confirm-lb'>Máy in đã chọn</label>
                         <div className='selected-printer-confirm-ctn'>
-                          <h6>Máy in ID</h6>
+                          <h6>Máy in ID {completeState.printer_id}</h6>
                           <div className='slt-prt-info'>
                             <span className='slt-prt-cfm-left'>
-                              <p className='cfm-config-p'>Tên thương hiệu: Canon</p>
-                              <p className='cfm-config-p'>Mẫu: brandname</p>
-                              <p className='cfm-config-p'>Cơ sở: campus</p>
-                              <p className='cfm-config-p'>Tòa: abc</p>
-                              <p className='cfm-config-p'>Phòng: abc</p>
+                              <p className='cfm-config-p'>Tên thương hiệu:{printerDetail.brand} </p>
+                              <p className='cfm-config-p'>Mẫu: {printerDetail.model}</p>
+                              <p className='cfm-config-p'>Cơ sở: {printerDetail.campusName}</p>
+                              <p className='cfm-config-p'>Tòa: {printerDetail.buildingName}</p>
+                              <p className='cfm-config-p'>Phòng: {printerDetail.roomNumber}</p>
                             </span>
                             <span className='slt-prt-cfm-right'>
-                              <p className='cfm-config-p'>Mô tả: mới ,không lem ...</p>
-                              <p className='cfm-config-p'>Tình trạng: Đang kích hoạt </p>
+                              <p className='cfm-config-p'>Mô tả: {printerDetail.description}</p>
+                              <p className='cfm-config-p'>Tình trạng: {printerDetail.printer_status} </p>
                             </span>
                           </div>
                         </div>
