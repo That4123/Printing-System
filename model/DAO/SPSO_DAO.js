@@ -148,10 +148,79 @@ function removePrinter(printer_id, controller) {
     });
 }
 
+function addNewPermittedFileType(permittedFileType, controller) {
+    if (!checkNoEmpty(permittedFileType)) {
+        controller({ code: 400, message: "Vui lòng nhập đủ thông tin loại file cần thêm!" }, null);
+    };
+    let sql = "INSERT INTO permitted_file_type (file_type, max_file_size) VALUES (?, ?)";
+    connect_DB.query(sql, [
+        permittedFileType.file_type,
+        permittedFileType.max_file_size
+    ], function (err, result) {
+        if (err) {
+            controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+        }
+        else {
+            controller(null, result);
+        }
+    });
+}
+
+function editPermittedFileType(permittedFileType, controller) {
+    if (!checkNoEmpty(permittedFileType)) {
+        controller({ code: 400, message: "Vui lòng nhập đầy đủ thông tin cần cập nhật cho loại file được phép in!" }, null);
+    }
+    else if (result.length == 0) {
+        controller({ code: 400, message: "Loại file được phép in cần cập nhật không tồn tại!" }, null);
+    }
+    else {
+        let sql = "UPDATE permitted_file_type SET file_type = ?, max_file_size = ? WHERE peritted_id = ?";
+        connect_DB.query(sql, [
+            permittedFileType.file_type,
+            permittedFileType.max_file_size,
+            permittedFileType.permitted_id
+        ], function (err, result) {
+            if (err) {
+                controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+            }
+            else {
+                controller(null, result);
+            }
+        });
+    }
+}
+
+function removePermittedFileType(permitted_id, controller) {
+    if (permitted_id == undefined || permitted_id == null || permitted_id == "") {
+        controller({ code: 400, message: "Vui lòng chọn id loại file được phép in cần xoá!" }, null);
+    }
+    connect_DB.query("SELECT * FROM permitted_file_type WHERE permitted_id = ?", [permitted_id], function (err, result) {
+        if (err) {
+            controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+        }
+        else if (result.length == 0) {
+            controller({ code: 400, message: "Loại file được phép in cần xoá không tồn tại!" }, null);
+        }
+        else {
+            connect_DB.query("DELETE FROM permitted_file_type WHERE permitted_id = ?", [permitted_id], function (err, result) {
+                if (err) {
+                    controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+                }
+                else {
+                    controller(null, result);
+                }
+            })
+        }
+    })
+}
+
 module.exports = {
     addNewPrinter,
     editPrinter,
     enablePrinter,
     disablePrinter,
-    removePrinter
+    removePrinter,
+    addNewPermittedFileType,
+    editPermittedFileType,
+    removePermittedFileType
 }

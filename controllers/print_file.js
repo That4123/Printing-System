@@ -51,8 +51,16 @@ module.exports = {
             !student.checkValidPagesToPrint(req.body.completeState)){
             res.status(400).json({ message: "Vui lòng bấm nút hoàn thành để cập nhật yêu cầu" });
         }
-        student.makePrintRequest(req.body.completeState, res);
-        res.status(200).json("success make request");
+        student.makePrintRequest(req,res)
+            .then(() => {
+                console.log("//////////////////////////////////////123///////////");
+                // res.status(200).json({message:"success make request"});
+            })
+            .catch((error) => {
+                console.log("//////////////////////////////////////234///////////");
+                // res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
+            }) 
+        
     }],
     makeUpdateRequest:[authorization_model.loadCurMember, authorization_model.authorizeStudent,function(req,res){
         if (!student.checkNoEmpty(req.body.sharedState)){
