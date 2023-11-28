@@ -14,7 +14,7 @@ const PrintingFile = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState('upload');
   const [sharedState, setSharedState] = useState({
-    printer_id: 1,
+    printer_id: '',
     file_path: '',
     file_name: '',
     paper_size:'',
@@ -63,7 +63,7 @@ const PrintingFile = () => {
       // onValueChange('is_double_side',(is_double_side===2));
     console.log(sharedState);
     console.log("completeState: ",completeState);
-    axios.post("/api/printfile/makeUpdateRequest", {
+    axios.post("/api/printFile/makeUpdateRequest", {
       sharedState,
     },{
         headers: {
@@ -86,7 +86,7 @@ const PrintingFile = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
-    axios.post("/api/printfile/makePrintRequest", {
+    axios.post("/api/printFile/makePrintRequest", {
       completeState,
     },{
         headers: {
