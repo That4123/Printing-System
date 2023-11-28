@@ -1,23 +1,48 @@
 var connect_DB = require('./connect_db');
-function makePrintRequest(req, res) {
-        let sql = "INSERT INTO print_request (file_name, file_path, chosen_printer, paper_size, pages_to_print, is_double_side, number_of_copies, print_type) VALUES (?,?, ?, ?, ?, ?, ?, ?)"
+async function makePrintRequest(req, res) {
+    makeRequest(req.body.completeState,res,function(print_request_id){
+        let sql = "INSERT INTO printing_log (student_id, printer_id, print_request_id, num_of_page_to_print, printing_status) VALUES (?, ?, ?, ?, ?)";
         connect_DB.query(sql, [
-            req.file_name,
-            req.file_path,
-            req.printer_id,
-            req.paper_size,
-            req.pages_to_print,
-            req.is_double_side,
-            req.number_of_copies,
-            req.print_type,
+            req.cur_member.user_id, 
+            req.body.completeState.printer_id, 
+            print_request_id, 
+            req.body.completeState.pages_to_print, 
+            "Pending"
         ], function (err, result, field) {
             if (err) {
+                console.log("loi makePrintRequest");
                 res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
             }
             else {
-                res.json(result);
+                console.log("makePrintRequest");
+                res.status(200).json({message:"success make print request"});
             }
         })
+    })
+    
+        
+}
+async function makeRequest(req,res,next) {
+    let sql = "INSERT INTO print_request (file_name, file_path, chosen_printer, paper_size, pages_to_print, is_double_side, number_of_copies, print_type) VALUES (?,?, ?, ?, ?, ?, ?, ?)"
+    connect_DB.query(sql, [
+        req.file_name,
+        req.file_path,
+        req.printer_id,
+        req.paper_size,
+        req.pages_to_print,
+        req.is_double_side,
+        req.number_of_copies,
+        req.print_type,
+    ], function (err, result, field) {
+        if (err) {
+            console.log("loi makeRequest");
+            res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
+        }
+        else {
+            console.log("makeRequest", result.insertId);
+            next(result.insertId);
+        }
+    })
 }
 function checkNoEmpty(obj) {
     for (let key in obj) {
@@ -39,4 +64,5 @@ module.exports = {
     makePrintRequest,
     checkNoEmpty,
     checkValidNumberOfCopies,
-    checkValidPagesToPrint}
+    checkValidPagesToPrint,
+    makeRequest}
