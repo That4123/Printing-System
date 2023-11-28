@@ -24,7 +24,6 @@ const PrintingConfig=({ sharedState, setSharedState }) => {
                     <option value="">Lựa chọn khổ giấy</option>
                     <option value="A3">A3</option>
                     <option value="A4">A4</option>
-                    <option value="A5">A5</option>
                 </select>
             </div>
             <div className="attribute-config side-page-config">
