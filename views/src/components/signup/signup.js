@@ -30,7 +30,18 @@ function SignUp() {
                 cookies.set("TOKEN", response.data.token, {
                     path: "/",
                 });
-                navigate("/publicTest");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
+                if (response.data.member.role == "Sinh viên") {
+                    navigate("/printFile");
+                }
+                else if (response.data.member.role == "Nhân viên SPSO") {
+                    navigate("/printing-queue");
+                }
+                else {
+                    navigate("/wip");
+                }
             })
             .catch((error) => {
                 if (error.response) {

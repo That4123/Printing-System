@@ -25,7 +25,7 @@ function ViewPermittedFileType() {
         axios.post('/api/viewPermittedFileType')
         .then(response => setPermittedFileTypes(response.data))
         .catch(error => console.error('Error fetching permitted file types:', error));
-    }, []);
+    }, [permittedFileTypes]);
 
     const handleAddButtonClick = () => {
         setShowPopup(true);
@@ -46,7 +46,7 @@ function ViewPermittedFileType() {
       };
     
     const handleRemoveType = (permittedId) => {
-        axios.post(`/api/viewPermittedFileType/remove?permittedID=${permittedId}`)
+        axios.post('/api/viewPermittedFileType', permittedId)
         .then(response => setPermittedFileTypes(response.data))
         .catch(error => console.error('Error fetching permitted file types:', error));
     };
