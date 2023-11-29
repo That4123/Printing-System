@@ -14,7 +14,7 @@ export default function PringtingReqCard({ id, user_name, status }) {
         <p className="m-0 fw-light fs-6 fst-italic">
           từ <span className="fw-bold">{user_name}</span>
         </p>
-        <p className="text-end me-2 mb-0 fs-5 fw-light">{status}</p>
+        <p className="text-end me-2 mb-0 fs-5 fw-semibold">{status}</p>
       </Link>
     );
   } else if (status === "accept") {
@@ -24,7 +24,7 @@ export default function PringtingReqCard({ id, user_name, status }) {
         <p className="m-0 fw-light fs-6 fst-italic">
           từ <span className="fw-bold">{user_name}</span>
         </p>
-        <p className="me-2 mb-0 fs-5 fw-light">{status}</p>
+        <p className="me-2 mb-0 fs-5 fw-semibold">{status}</p>
       </div>
     );
   } else {
@@ -34,7 +34,7 @@ export default function PringtingReqCard({ id, user_name, status }) {
         <p className="m-0 fw-light fs-6 fst-italic">
           từ <span className="fw-bold">{user_name}</span>
         </p>
-        <p className="me-2 mb-0 fs-5 fw-light">{status}</p>
+        <p className="me-2 mb-0 fs-5 fw-semibold">{status}</p>
       </div>
     );
   }

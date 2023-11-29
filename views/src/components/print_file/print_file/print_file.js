@@ -9,6 +9,45 @@ import Modal from 'react-modal'
 import axios from 'axios';
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
+const printer_detail_cfm=(printerDetail)=>{
+  return(
+    <>
+      <label className='selected-printer-confirm-lb'>Máy in đã chọn</label>
+      <div className='selected-printer-confirm-ctn'>
+        <h6>Máy in {printerDetail.printer_id}</h6>
+        <div className='slt-prt-info'>
+          <span className='slt-prt-cfm-left'>
+            <p className='cfm-config-p'>Tên thương hiệu:{printerDetail.brand} </p>
+            <p className='cfm-config-p'>Mẫu: {printerDetail.model}</p>
+            <p className='cfm-config-p'>Cơ sở: {printerDetail.campusName}</p>
+            <p className='cfm-config-p'>Tòa: {printerDetail.buildingName}</p>
+            <p className='cfm-config-p'>Phòng: {printerDetail.roomNumber}</p>
+          </span>
+          <span className='slt-prt-cfm-right'>
+            <p className='cfm-config-p'>Mô tả: {printerDetail.description}</p>
+            <p className='cfm-config-p'>Tình trạng: {printerDetail.printer_status} </p>
+          </span>
+        </div>
+      </div>
+    </>
+  );
+};
+const print_config_cfm=(print_request)=>{
+  return(
+    <>
+      <label className='selected-printer-confirm-lb'>Cấu hình in</label>
+      <div className='selected-printer-confirm-ctn'>
+        <div className='slt-cfg-cfm-left'>
+          <p className='cfm-config-p'>Khổ giấy: {print_request.paper_size}</p>
+          <p className='cfm-config-p'>{ (print_request.is_double_side)? 'In hai mặt':'In một mặt'}</p>
+          <p className='cfm-config-p'>Số bản in: {print_request.number_of_copies}</p>
+          <p className='cfm-config-p'>Trang in: {print_request.pages_to_print}</p>
+          <p className='cfm-config-p'>Loại in: {print_request.print_type}</p>
+        </div>
+      </div>
+    </>
+  );
+};
 const PrintingFile = () => {
   const token = cookies.get("TOKEN");
   const navigate = useNavigate();
@@ -49,7 +88,6 @@ const PrintingFile = () => {
   };  
   const [printerDetail,setPrinterDetail ]=useState(0);
   useEffect(() => {
-    // lấy danh sách máy in từ backend
     axios.post('/api/viewPrinterInfo',{
       printer_id:completeState.printer_id,
     })
@@ -70,8 +108,6 @@ const PrintingFile = () => {
   const handleComplete = () =>{
       // onValueChange('paper_size',paper_size);
       // onValueChange('is_double_side',(is_double_side===2));
-    console.log(sharedState);
-    console.log("completeState: ",completeState);
     axios.post("/api/printFile/makeUpdateRequest", {
       sharedState,
     },{
@@ -80,7 +116,6 @@ const PrintingFile = () => {
         }
     })
         .then((response) => {
-            console.log(response);
             setCompleteState(sharedState);
             setModalCompleteOpen(true);
             setErrorMessage();
@@ -138,33 +173,8 @@ const PrintingFile = () => {
                           <label className='upload-file-lb'>File tải lên</label>
                           <div className='upload-file-name'>{completeState.file_name}</div>
                         </div>
-                        <label className='selected-printer-confirm-lb'>Máy in đã chọn</label>
-                        <div className='selected-printer-confirm-ctn'>
-                          <h6>Máy in ID {completeState.printer_id}</h6>
-                          <div className='slt-prt-info'>
-                            <span className='slt-prt-cfm-left'>
-                              <p className='cfm-config-p'>Tên thương hiệu:{printerDetail.brand} </p>
-                              <p className='cfm-config-p'>Mẫu: {printerDetail.model}</p>
-                              <p className='cfm-config-p'>Cơ sở: {printerDetail.campusName}</p>
-                              <p className='cfm-config-p'>Tòa: {printerDetail.buildingName}</p>
-                              <p className='cfm-config-p'>Phòng: {printerDetail.roomNumber}</p>
-                            </span>
-                            <span className='slt-prt-cfm-right'>
-                              <p className='cfm-config-p'>Mô tả: {printerDetail.description}</p>
-                              <p className='cfm-config-p'>Tình trạng: {printerDetail.printer_status} </p>
-                            </span>
-                          </div>
-                        </div>
-                        <label className='selected-printer-confirm-lb'>Cấu hình in</label>
-                        <div className='selected-printer-confirm-ctn'>
-                          <div className='slt-cfg-cfm-left'>
-                            <p className='cfm-config-p'>Khổ giấy: {completeState.paper_size}</p>
-                            <p className='cfm-config-p'>{ (completeState.is_double_side)? 'In hai mặt':'In một mặt'}</p>
-                            <p className='cfm-config-p'>Số bản in: {completeState.number_of_copies}</p>
-                            <p className='cfm-config-p'>Trang in: {completeState.pages_to_print}</p>
-                            <p className='cfm-config-p'>Loại in: {completeState.print_type}</p>
-                          </div>
-                        </div>
+                        {printer_detail_cfm(printerDetail)}
+                        {print_config_cfm(completeState)}
                         <div className='btn-ctn-cfm-cfg'>
                           <p className='cfm-config-p'>Chắc chắn đây là thiết lập của bạn?</p>
                           <button onClick={() => {closeModal(); handleSubmit()}} className="cfm-config-btn">Đúng. Yêu cầu in</button>
@@ -207,5 +217,5 @@ const PrintingFile = () => {
     </div>
   );
 };
-
+export { printer_detail_cfm, print_config_cfm };
 export default PrintingFile;

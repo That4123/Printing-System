@@ -10,11 +10,9 @@ async function makePrintRequest(req, res) {
             "Pending"
         ], function (err, result, field) {
             if (err) {
-                console.log("loi makePrintRequest");
                 res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
             }
             else {
-                console.log("makePrintRequest");
                 res.status(200).json({message:"success make print request"});
             }
         })
@@ -35,14 +33,61 @@ async function makeRequest(req,res,next) {
         req.print_type,
     ], function (err, result, field) {
         if (err) {
-            console.log("loi makeRequest");
             res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
         }
         else {
-            console.log("makeRequest", result.insertId);
             next(result.insertId);
         }
     })
+}
+async function getPrintReqStatusList(student_id,res){
+    getPrintReqStatusListId(student_id,function(err,listId){
+        if (err){
+            res.status(500).json({message:"server err"});
+        }
+        connect_DB.query("SELECT * FROM `printing_log` WHERE print_request_id IN (?)",[listId],function (err, allRowsResult) {
+            if (err) {
+                res({ code: 500, message: "Có lỗi đã xảy ra khi truy vấn dữ liệu. Vui lòng thử lại sau" }, null);
+            } else if (allRowsResult.length === 0) {
+                res({ code: 400, message: "Không tìm thấy dữ liệu cho các print_request_id đã cho" }, null);
+            } else {
+                res(null, allRowsResult);
+            }
+        });
+    });
+}
+async function getPrintReqStatusListId(student_id,callback){
+    let sql = "SELECT `print_request_id` FROM `printing_log` WHERE student_id=?";
+    connect_DB.query(sql, [
+        student_id
+    ],function (err, result) {
+        if (err) {
+            callback({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+        }
+        else if (result.length == 0) {
+            callback({ code: 400, message: "Bạn không có yêu cầu in nào" }, null);
+        }
+        else {
+            const listId = result.map(row => row.print_request_id);
+            callback(null,listId);
+        }
+    });
+}
+function getConfigDetail(print_request_id,callback){
+    let sql = "SELECT * FROM `print_request` WHERE request_id=?";
+    connect_DB.query(sql, [
+        print_request_id    
+    ],function (err, result) {
+        if (err) {
+            callback({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+        }
+        else if (result.length == 0) {
+            callback({ code: 400, message: "Bạn không có" }, null);
+        }
+        else {
+            callback(null,result);
+        }
+    });
 }
 function checkNoEmpty(obj) {
     for (let key in obj) {
@@ -65,4 +110,6 @@ module.exports = {
     checkNoEmpty,
     checkValidNumberOfCopies,
     checkValidPagesToPrint,
-    makeRequest}
+    makeRequest,
+    getPrintReqStatusList,
+    getConfigDetail}
