@@ -1,38 +1,49 @@
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Link, NavLink, Outlet, Navigate, useNavigate } from "react-router-dom";
-import $ from 'jquery';
-import Popper from 'popper.js';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import axios from 'axios'
-import { useState, useEffect } from "react";
-import Header from '../shared/header'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import './homepage.css'; // Import the CSS file for styling
 
 function Homepage() {
   const [greetingFromServer, setGreetingFromServer] = useState(null);
+  const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
   const navigate = useNavigate();
+
+  const backgrounds = [
+    'https://e-learning.hcmut.edu.vn/theme/boost/images/slbk.jpg?1701272658035',
+    'https://e-learning.hcmut.edu.vn/theme/boost/images/slbktv.jpg?1701272656955'
+  ];
+
   useEffect(() => {
     axios.get('/api/homepage')
-      .then((respond) => {
-        console.log(respond);
-        setGreetingFromServer(respond.data.greeting);
+      .then((response) => {
+        console.log(response);
+        setGreetingFromServer(response.data.greeting);
       })
       .catch((error) => {
         console.error("Error!!!!!!", error);
-      })
+      });
   }, []);
-  console.log(greetingFromServer);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentBackgroundIndex(prevIndex => (prevIndex + 1) % backgrounds.length);
+    }, 5000); // Set interval to 3 seconds (3000 milliseconds)
+
+    return () => clearInterval(intervalId); 
+  }, [currentBackgroundIndex]);
+
+  const backgroundImageStyle = {
+    backgroundImage: `url(${backgrounds[currentBackgroundIndex]})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    height: '100vh', // Adjust the height as needed
+  };
+
   return (
-    <>
-      <h1>Trang chủ nè</h1>
-      <h6>Trang này chưa có gì đâu, chứa nút để đăng nhập đăng ký thôi</h6>
-      <button className="btn btn-primary" onClick={() => { navigate("/signin"); }}>
-        Đăng nhập
-      </button>
-      <button className="btn btn-primary" onClick={() => { navigate("/signup"); }}>
-        Đăng ký
-      </button>
-    </>
+    <div className="homepage-container" style={backgroundImageStyle}>
+      
+    </div>
   );
 }
-export default Homepage
+
+export default Homepage;
