@@ -20,21 +20,26 @@ const ChoosePrinter = ({ value, onValueChange }) => {
   const handleChange = (id) => {
     onValueChange('printer_id', id);
   };
-  /*
+  const [printerChoose, setPrinterChoose] = useState([])
+  const [printerView, setPrinterView] = useState([])
+  const handleClickChoose = (id) => {
+    
+     
+      axios.post('/api/printFile/printerDetail', {printer_id: id})
+        .then(response => {console.log(response.data); setPrinterChoose(response.data)})
+        .catch(error => console.error('Error fetching printers:', error));
+    
+  }
+  const displaySpecificPrinterDetail = (id) => {
+      
+      axios.post('/api/printFile/printerDetail', {printer_id: id})
+        .then(response => setPrinterView(response.data))
+        .catch(error => console.error('Error fetching printers:', error));
+  
+  }
   useEffect(() => {
-    axios.get('/api/chooseprinter')
-      .then((respond) => {
-        console.log(respond.data);
-        setListPrinter(respond.data);
-      })
-      .catch((error) => {
-        console.error("Error!!!!!!", error);
-      })
-  }, []);
-  */
-  useEffect(() => {
-    // lấy danh sách máy in từ backend
-    axios.post('/api/viewAllPrinter')
+    
+    axios.get('/api/printFile')
       .then(response => setListPrinter(response.data))
       .catch(error => console.error('Error fetching printers:', error));
   }, []);
@@ -49,7 +54,7 @@ const ChoosePrinter = ({ value, onValueChange }) => {
   const [showChoosePrinter, setShowChoosePrinter] = useState(false)
   return (
     <>
-    {showChoosePrinter && listPrinter[numberPrinter] && ( 
+    {showChoosePrinter && printerChoose && ( 
     <>
     
     <h2>Máy in đã chọn</h2>
@@ -59,14 +64,14 @@ const ChoosePrinter = ({ value, onValueChange }) => {
         <div style={{fontSize:"30px", fontWeight: "700", marginLeft: "5vw"}}>Máy in {listPrinter[numberPrinter].printer_id}</div>
         <div className="info-printer-text">
             <div className="info-printer-text-1">
-              <div>Tên thương hiệu: {listPrinter[numberPrinter].brand}</div>
-              <div>Mẫu: {listPrinter[numberPrinter].model}</div>
-              <div>Cơ sở: {listPrinter[numberPrinter].campusName}</div>
-              <div>Phòng: {listPrinter[numberPrinter].roomNumber}</div>
+              <div>Tên thương hiệu: {printerChoose.brand}</div>
+              <div>Mẫu: {printerChoose.model}</div>
+              <div>Cơ sở: {printerChoose.campusName}</div>
+              <div>Phòng: {printerChoose.roomNumber}</div>
             </div>
             <div className="info-printer-text-1">
-              <div>Mô tả: {listPrinter[numberPrinter].description}</div>
-              <div>Tình trạng: {listPrinter[numberPrinter].printer_status}</div>
+              <div>Mô tả: {printerChoose.description}</div>
+              <div>Tình trạng: {printerChoose.printer_status}</div>
            
            </div>
         </div>
@@ -86,8 +91,8 @@ const ChoosePrinter = ({ value, onValueChange }) => {
                 <div className="name-printer"> Máy in {card.printer_id} </div>
                 </div>
                 <div className="btn-area">
-                    <button type="button" className="btn btn-dark" onClick={() => {setPrinterDetail(i); setShowDetail(true)}}>Xem</button>
-                    <button type="button" className="btn btn-dark" style = {{backgroundColor: "#9999FF", border: "none"}}  onClick={() => {setNumber(i); setShowChoosePrinter(true); setShowDetail(false); handleChange(card.printer_id);}}>Chọn</button>
+                    <button type="button" className="btn btn-dark" onClick={() => {setPrinterDetail(i); setShowDetail(true);  displaySpecificPrinterDetail(card.printer_id); }}>Xem</button>
+                    <button type="button" className="btn btn-dark" style = {{backgroundColor: "#9999FF", border: "none"}}  onClick={() => {setNumber(i); setShowChoosePrinter(true); setShowDetail(false); handleChange(card.printer_id);handleClickChoose(card.printer_id);}}>Chọn</button>
                 </div>
             </div>
           )
@@ -98,28 +103,29 @@ const ChoosePrinter = ({ value, onValueChange }) => {
             <img src={arrowLTR}  alt ={"arrowLTR"}/>
         </button>
     </div>
-    {showDetail && listPrinter[numberPrinterDetail] && (
+    {showDetail && printerView && (
     <div className="info-printer" key={numberPrinterDetail}>
       <img src={printerFill} alt={`Printer ${numberPrinterDetail}`} />
       <div className="info-printer-name">
         <div style={{ fontSize: "30px", fontWeight: "700", marginLeft: "5vw" }}>
-          Máy in {listPrinter[numberPrinterDetail].printer_id}
+          Máy in {printerView.printer_id}
         </div>
         <div className="info-printer-text">
           <div className="info-printer-text-1">
-            <div>Tên thương hiệu: {listPrinter[numberPrinterDetail].brand}</div>
-            <div>Mẫu: {listPrinter[numberPrinterDetail].model}</div>
-            <div>Cơ sở: {listPrinter[numberPrinterDetail].campusName}</div>
-            <div>Phòng: {listPrinter[numberPrinterDetail].roomNumber}</div>
+            <div>Tên thương hiệu: {printerView.brand}</div>
+            <div>Mẫu: {printerView.model}</div>
+            <div>Cơ sở: {printerView.campusName}</div>
+            <div>Phòng: {printerView.roomNumber}</div>
           </div>
           <div className="info-printer-text-1">
-            <div>Mô tả: {listPrinter[numberPrinterDetail].description}</div>
-            <div>Tình trạng: {listPrinter[numberPrinterDetail].printer_status}</div>
+            <div>Mô tả: {printerView.description}</div>
+            <div>Tình trạng: {printerView.printer_status}</div>
           </div>
         </div>
       </div>
     </div>
 )}
+
 
     </>
   );

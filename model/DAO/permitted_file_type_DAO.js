@@ -25,8 +25,7 @@ function checkFileSize(req) {
             if (err) {
                 reject(err);
             } else {
-                console.log(req.file_size);
-                console.log(result[0].max_file_size);
+                
                 if (req.file_size <= result[0].max_file_size * 1048576) {
                     resolve(true);
                 } else {
