@@ -18,31 +18,7 @@ const cookies = new Cookies();
 
 function ViewAllPrinter() {
   const [printers, setPrinters] = useState([]);
-
-  useEffect(() => {
-    // lấy danh sách máy in từ backend
-    axios.post('/api/viewAllPrinter')
-      .then(response => setPrinters(response.data))
-      .catch(error => console.error('Error fetching printers:', error));
-  }, []);
-  const setColorByStatus = (status)=> {
-    const colorMap = {
-        'Enabled': 'Green',
-        'Disabled': 'Red',
-    };
-    return {backgroundColor: `${colorMap[status]}`};
-  };
-  const handleToggle = (printerId) => {
-    setPrinters((prevPrinters) => {
-      return prevPrinters.map(printer => {
-        if (printer.id === printerId) {
-          return { ...printer, status: !printer.status };
-          // Gửi yêu cầu API để cập nhật trạng thái trong cơ sở dữ liệu với printerId và !printer.status
-        }
-        return printer;
-      });
-    });
-  };
+  const navigate = useNavigate();
   const [searchCriteria, setSearchCriteria] = useState({
     printer_id: '',
     campusName: '',
@@ -50,26 +26,65 @@ function ViewAllPrinter() {
     roomNumber: '',
     printer_status: ''
   });
+  const [addNewPrinter, setAddNewPrinter] = useState(null);
+  const [newPrinterContent, setNewPrinterContent] = useState({
+    brand: '',
+    model: '',
+    description: '',
+    campusName: '',
+    roomNumber: '',
+    buildingName: '',
+    printer_status: '',
+  });
 
+  useEffect(() => {
+    // lấy danh sách máy in từ backend
+    axios.post('/api/viewAllPrinter')
+      .then(response => setPrinters(response.data))
+      .catch(error => console.error('Error fetching printers:', error));
+  }, []);
+  //Hàm handleToggle dùng để switch trạng thái máy in
+  const handleToggle = (printerId) => {
+    //Gọi hàm enable/ disable Printer
+  };
+  const handleSaveNewPrinter = () =>{
+    // nội dung máy in mới được lưu trong newPrinterContent
+    console.log('Thêm máy in thành công')
+  }
+  const handleSearch = () => {
+    // Thực hiện tìm kiếm dựa trên searchCriteria
+  };
+  const setColorByStatus = (status)=> {
+    const colorMap = {
+        'Đang hoạt động': 'Green',
+        'Không hoạt động': 'Red',
+    };
+    return {backgroundColor: `${colorMap[status]}`};
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSearchCriteria((prevCriteria) => ({ ...prevCriteria, [name]: value }));
   };
-
-  const handleSearch = () => {
-    // Thực hiện tìm kiếm dựa trên searchCriteria
+  const handleAddNewPrinter =() => {
+     setAddNewPrinter(1)
   };
-  const navigate = useNavigate();
   const handleViewDetail = (PrinterId) => {
    navigate(`/ViewPrinterInformation/${PrinterId}`);
-  }
+  };
+  const handleInputChangeNewPrinter = (e) => {
+    const { name, value } = e.target;
+    setNewPrinterContent((prevCriteria) => ({ ...prevCriteria, [name]: value }));
+  };
+  const handleCancel = () => {
+    setAddNewPrinter(null)
 
+  };
     
     return (
     <div >
       <h1>Printer List</h1>
       <div>
-        <button className='btn add-btn'>
+        <button className='btn add-btn' onClick={()=>handleAddNewPrinter()}>
           <i className='ti-plus'></i>
           Add new printer
         </button>
@@ -82,13 +97,13 @@ function ViewAllPrinter() {
         Campus:
         <select name="campusName" value={searchCriteria.campusName} onChange={handleInputChange}>
         <option value="">All</option>
-          <option value="BK.CS1">BK.CS1</option>
-          <option value="BK.CS2">BK.CS2</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
         </select>
       </label>
       <label>
         Building Name:
-        <input type="text"name="buildingName" placeholder='Eg: BK.B1' value={searchCriteria.buildingName} onChange={handleInputChange}/>
+        <input type="text"name="buildingName" placeholder='Eg: B1' value={searchCriteria.buildingName} onChange={handleInputChange}/>
       </label>
       <label>
         Room Number:
@@ -98,8 +113,8 @@ function ViewAllPrinter() {
         Status:
         <select name="printer_status" value={searchCriteria.printer_status} onChange={handleInputChange}>
           <option value="">All</option>
-          <option value="On">On</option>
-          <option value="Off">Off</option>
+          <option value="Đang hoạt động">On</option>
+          <option value="Không hoạt động">Off</option>
         </select>
       </label>
       <button  onClick={handleSearch}> <i className='ti-search'></i> Search</button>
@@ -110,15 +125,15 @@ function ViewAllPrinter() {
           <li key={printer.id} className='Printer-Block'>
             <i className='ti-printer'></i>
             <p id='Printer-header'> Printer ID: {printer.printer_id}</p>
-            <div class='status-dot' style={setColorByStatus(printer.printer_status)}></div>
+            <div className='status-dot' style={setColorByStatus(printer.printer_status)}></div>
             <div className='Printer-body'>
               Campus: {printer.campusName}<br></br> 
               Building: {printer.buildingName} <br></br>
               Room: {printer.roomNumber} <br></br>
-              Status: {printer.printer_status==='Enabled' ? 'On' : 'Off'}
+              Status: {printer.printer_status==='Đang hoạt động' ? 'On' : 'Off'}
             </div>
             <button  className ='Switch-status-btn' onClick={() => handleToggle(printer.printer_id)}>
-              {printer.printer_status ==='Enabled' ? 'Disable' : 'Enable'}
+              {printer.printer_status ==='Đang hoạt động' ? 'Disable' : 'Enable'}
             </button>
             <button className='Switch-status-btn' onClick={()=>handleViewDetail(printer.printer_id)}>
               Detail
@@ -127,6 +142,53 @@ function ViewAllPrinter() {
           </li>
         ))}
       </ul>
+
+      {addNewPrinter&&(
+        <div className='overlay'>
+          <div className='confirm-dialog'>
+          <h5>Thêm máy in mới</h5>
+          <i className='ti-printer'></i>
+          <div className='Add-printer-form'>
+              <div>
+                <label>Thương hiệu:</label>
+                <input type="text" name="brand" value={newPrinterContent.brand} placeholder='Canon'  onChange={handleInputChangeNewPrinter} />
+              </div>
+              <div>
+                <label>Mẫu máy:</label>
+                <input type="text" name="model" value={newPrinterContent.model} placeholder='LPB 3060'  onChange={handleInputChangeNewPrinter} />
+              </div>
+              <div>
+                <label>Mô tả:</label>
+                <input type="text" name="description" value={newPrinterContent.description} placeholder='Mới, mực còn'  onChange={handleInputChangeNewPrinter} />
+              </div>
+              <div>
+                <label>Cơ sở:</label>
+                <select name="campusName" value={newPrinterContent.campusName} onChange={handleInputChangeNewPrinter}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+              </div>
+              <div>
+                <label>Toà:</label>
+                <input type="text" name="buildingName" value={newPrinterContent.buildingName} placeholder='H6'  onChange={handleInputChangeNewPrinter} />
+              </div>
+              <div>
+                <label>Phòng:</label>
+                <input type="text" name="roomNumber" value={newPrinterContent.roomNumber} placeholder='602'  onChange={handleInputChangeNewPrinter} />
+              </div>
+              <div>
+              <label>Trạng thái:</label>
+                <select name="printer_status" value={newPrinterContent.printer_status} onChange={handleInputChangeNewPrinter}>
+                  <option value="Không hoạt động">Không hoạt động</option>
+                  <option value="Đang hoạt động">Đang hoạt động</option>
+                </select>
+              </div>
+                <button className='btn1 huy' onClick={()=> handleCancel()}>Huỷ</button>
+                <button className='btn1' onClick={()=> handleSaveNewPrinter()}>Thêm</button>
+          </div>  
+          </div>
+        </div>
+      )}
     </div>
   );
 }
