@@ -22,6 +22,7 @@ import ChoosePrinter from './components/print_file/choose_printer/choose_printer
 import PrintFile from './components/print_file/print_file/print_file.js'
 import PrintingRequest from './components/printing-request/printingRequest.jsx';
 import ViewPermittedFileType from './components/permitted_file_type/ViewPermittedFileType';
+import PrintingStatus  from './components/printing_status/printing_status';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path='signin' element={<SignIn />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='printFile' element={<PrintFile />} />
+        <Route path='printingStatus' element={<PrintingStatus/>} />
         <Route path='publicTest' element={<PublicTest />} />
         <Route element={<PrivateRoutes validateRoute={"protectedTest"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />

@@ -16,7 +16,7 @@ const printFileRoute = require("./routes/print_file")
 const viewAllPrinterRoute = require("./routes/ViewAllPrinter");
 const viewPrinterInfo = require("./routes/ViewPrinterInformation");
 const permittedFileTypeRoute = require("./routes/ViewPermittedFileType")
-
+const printingStatusRoute = require("./routes/printing_status.js")
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100 // limit each IP to 100 requests per windowMs
@@ -62,6 +62,8 @@ app.use("/api/viewPrinterInfo", viewPrinterInfo);
 app.use("/api/chooseprinter", printFileRoute);
 
 app.use("/api/printFile", printFileRoute);
+
+app.use("/api/printingStatus", printingStatusRoute);
 
 app.use("/api/uploadfile", printFileRoute)
 
