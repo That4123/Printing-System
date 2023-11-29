@@ -9,9 +9,8 @@ var cookieParser = require('cookie-parser');
 
 const homepageRoute = require('./routes/homepage');
 const signinRoute = require('./routes/signin');
-const protectedTestRoute = require("./routes/protected_test");
+const authorizationRoute = require("./routes/authorization");
 const registrationRoute = require("./routes/registration");
-const publicTestRoute = require("./routes/public_test");
 const printFileRoute = require("./routes/print_file")
 const viewAllPrinterRoute = require("./routes/ViewAllPrinter");
 const viewPrinterInfo = require("./routes/ViewPrinterInformation");
@@ -51,11 +50,9 @@ app.use("/api/homepage", homepageRoute);
 
 app.use("/api/signin", signinRoute);
 
-app.use("/api/protectedTest", protectedTestRoute);
+app.use("/api/authorization", authorizationRoute);
 
 app.use("/api/register", registrationRoute);
-
-app.use("/api/publicTest", publicTestRoute);
 
 app.use("/api/viewAllPrinter", viewAllPrinterRoute);
 

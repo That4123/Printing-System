@@ -17,7 +17,7 @@ function PublicTest() {
     const token = cookies.get("TOKEN");
     const navigate = useNavigate();
     useEffect(() => {
-        axios.post("/api/publicTest/loadCommentFrame", {}, {
+        axios.post("/api/authorization/student", {}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -41,7 +41,7 @@ function PublicTest() {
                 </>
             );
         }).catch((error) => { });
-        axios.post("/api/publicTest/loadMemberConfig", {}, {
+        axios.post("/api/authorization/spso", {}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -49,7 +49,7 @@ function PublicTest() {
             setMemberConfig(
                 <>
                     <button className="btn btn-primary">
-                        Nút này chỉ có thể được thấy bởi quản trị viên
+                        Nút này chỉ có thể được thấy bởi nhân viên SPSO
                     </button>
                     <button type="submit" className="btn btn-primary" onClick={() => { cookies.remove("TOKEN", { path: "/" }); navigate("/signin"); }}>
                         Đăng xuất
