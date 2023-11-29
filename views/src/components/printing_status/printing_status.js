@@ -22,7 +22,7 @@ const PrintDetail=({selectedId,printingLogList, isOpen, closeModal })=>{
         .catch(error => console.error('Error fetching printers:', error));
       axios
         .post('/api/printingStatus/getConfigDetail', {
-          print_request_id: 48,
+          print_request_id: printingLogList[selectedId].print_request_id,
         }, {
           headers: {
             Authorization: `Bearer ${token}`,
