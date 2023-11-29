@@ -5,6 +5,13 @@ const PrintRequest = require('../model/DTO/print_request')
 const printingRestriction = require('../model/DAO/permitted_file_type_DAO')
 const authorization_model = require('../model/DAO/authorization');
 module.exports = {
+    
+    getPrinterListID: function (req, res){
+        printer.getPrinterListID(res)
+    },
+    getPrintersDetail: function (req, res){
+        printer.getPrintersDetail(req.body.printer_id, res);
+    },
     getPrinterList: function (req, res){
         printerModel.getPrinters((err, printers) => {
           if (err) {
@@ -15,7 +22,6 @@ module.exports = {
           }
         });
       },
-      
     handleUploadFile: async function(req, res){
         try {
             const isFileTypeAllowed = await printingRestriction.checkFileType(req.body.obj.file_type, res);

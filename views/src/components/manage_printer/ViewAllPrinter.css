@@ -95,13 +95,12 @@ i.ti-printer {
     display: block;
     float:right;
     border: 1px solid;
-    min-width: 80px;
+    min-width: 70px;
     border-radius: 10px;
     font-size: 15px;
     padding: 5px 10px;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-    margin-right: 5px;
-    
+    margin-top: 5px;
 }
 .Switch-status-btn:hover{
     background-color: gray;
@@ -109,3 +108,94 @@ i.ti-printer {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
     
 }
+
+.printer-information{
+    background-color: #c8e7fa;
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 20px;
+    line-height: 30px;
+    width: 500px;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+.printer-information label{
+    margin-top: 5px;
+    box-sizing: border-box;
+    height: 40px;
+    min-width: 120px;
+}
+.printer-information input {
+    padding: 3px;
+}
+.Information-box{
+    display: block;
+    border: solid 1px;
+}
+.view-information i{
+    font-size: 100px !important;
+    margin-top: 10px;
+}
+.Edit-status span{
+    display: inline-block;
+    padding-right: 10px;
+    min-width: 170px;
+   
+
+}
+.Edit-status {
+    display: inline-block;
+}
+.btn1{
+    float: right;
+    font-size: 20px;
+    margin-left: 30px;
+    padding:  3px 10px;
+    border-style:solid;
+    border-color: #000;
+    border-width: 1px;
+    min-width: 120px;
+    border-radius: 5px;
+}
+.btn1:hover{
+    background-color: rgba(202,196,196,0.5);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
+}
+.huy {
+    background-color: rgba(241, 47, 47, 0.8) ;
+}
+.confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    font-size: 30px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 9; /* Đặt giá trị z-index cao hơn để hiển thị trên cùng */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+    z-index: 9; /* Đặt giá trị z-index dưới hộp thoại */
+  }
+  .Add-printer-form {
+    display: inline-block;
+    font-size: 20px;
+    margin:5px;
+  }
+  .Add-printer-form label{
+    display: inline-block;
+    padding: 5px;
+    min-width: 130px;
+  }
+  .Add-printer-form .btn1 {
+    margin-top: 10px;
+  }
