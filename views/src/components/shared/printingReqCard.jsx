@@ -4,7 +4,7 @@ import "./printingReqCard.css";
 import { Link } from "react-router-dom";
 
 export default function PringtingReqCard({ id, user_name, status }) {
-  if (status === "waiting") {
+  if (status === "Pending") {
     return (
       <Link
         to={`/printing-queue/printing-request/${id}`}
@@ -17,7 +17,7 @@ export default function PringtingReqCard({ id, user_name, status }) {
         <p className="text-end me-2 mb-0 fs-5 fw-semibold">{status}</p>
       </Link>
     );
-  } else if (status === "accept") {
+  } else if (status === "Accepted") {
     return (
       <div className="d-flex justify-content-between align-items-center text-bg-success rounded-pill mb-3 p-2 fs-4 w-75 bg-success">
         <p className="ms-2 mb-0">Yêu cầu in {id}</p>

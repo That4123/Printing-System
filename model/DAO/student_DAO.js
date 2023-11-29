@@ -10,6 +10,7 @@ async function makePrintRequest(req, res) {
             "Pending"
         ], function (err, result, field) {
             if (err) {
+                console.log(err);
                 res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
             }
             else {
@@ -33,6 +34,7 @@ async function makeRequest(req,res,next) {
         req.print_type,
     ], function (err, result, field) {
         if (err) {
+            console.log(err);
             res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
         }
         else {

@@ -28,7 +28,6 @@ const PrintingRequest = () => {
     axios.get(`/api/printRequest/${request_id}`).then((res) => {
       if (res.status === 200) {
         setRequest(res.data[0]);
-        console.log(res);
       }
       else {
         console.log("Something happen");
@@ -44,8 +43,8 @@ const PrintingRequest = () => {
         <div className="d-flex justify-content-between">
         <p className="mb-1 fs-2 fw-bold">Yêu cầu in {request.request_id}</p>
         <div>
-          <button type="button" className="p-2 me-3 btn btn-danger" onClick={() => {handleButtonClick('reject')}}>Từ chối</button>
-          <button type="button" className="p-2 btn btn-success" onClick={() => {handleButtonClick('accept')}}>Chấp nhận</button>
+          <button type="button" className="p-2 me-3 btn btn-danger" onClick={() => {handleButtonClick('Denied')}}>Từ chối</button>
+          <button type="button" className="p-2 btn btn-success" onClick={() => {handleButtonClick('Accepted')}}>Chấp nhận</button>
         </div>
         </div>
         <div className="border-top border-dark-subtle"></div>
