@@ -1,13 +1,173 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Link, NavLink, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import Popper from 'popper.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import logo from '../../img/SIMSBCLogo.png'
-import { useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import Cookies from "universal-cookie";
+import axios from 'axios';
 
+const UserContext = createContext();
 
-export default function Navbar(props) {
+export default function Navbar() {
+    const navigate = useNavigate();
+    const [signin, setSignIn] = useState(false);
+    const cookies = new Cookies();
+    const [role, setRole] = useState(null);
+    useEffect(() => {
+        const token = cookies.get("TOKEN");
+        if (!token) {
+            setSignIn(false);
+            setRole(null);
+        }
+        else {
+            axios.post("/api/authorization/student", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((response) => {
+                setSignIn(true);
+                setRole("Sinh viên");
+            }).catch((error) => { });
+
+            axios.post("/api/authorization/spso", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((response) => {
+                setSignIn(true);
+                setRole("Nhân viên SPSO");
+            }).catch((error) => { });
+
+            axios.post("/api/authorization/financier", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((response) => {
+                setSignIn(true);
+                setRole("Nhân viên văn phòng tài chính");
+            }).catch((error) => { });
+
+            axios.post("/api/authorization/admin", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((response) => {
+                setSignIn(true);
+                setRole("Quản trị viên");
+            }).catch((error) => { });
+        }
+    }, []);
+
+    const handleSignOut = (e) => {
+        cookies.remove('TOKEN', {
+            path: "/",
+        });
+        setSignIn(false);
+        setRole(null);
+        navigate("signin");
+    }
+
+    let navItem = null, renderSignOut = null;
+
+    if (!signin) {
+        navItem = (
+            <>
+                <li className="nav-item">
+                    <Link className="nav-link" aria-current="page" to="/">
+                        Trang chủ
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/signin">
+                        Đăng nhập
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/signup">
+                        Đăng ký
+                    </Link>
+                </li>
+            </>
+        )
+    }
+    else {
+        if (role === "Sinh viên") {
+            navItem = (
+                <>
+                    <li className="nav-item">
+                        <Link className="nav-link" aria-current="page" to="/">
+                            Trang chủ
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/printFile">
+                            In ấn
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/printingStatus">
+                            Trạng thái in
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/buyPrintingPages">
+                            Mua trang in (WIP)
+                        </Link>
+                    </li>
+                </>
+            );
+        }
+        else if (role === "Nhân viên SPSO") {
+            navItem = (
+                <>
+                    <li className="nav-item">
+                        <Link className="nav-link" aria-current="page" to="/">
+                            Trang chủ
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/printing-queue">
+                            Quản lý hàng đợi
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/viewPermittedFileType">
+                            Giới hạn in ấn
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/viewAllPrinter">
+                            Quản lý máy in
+                        </Link>
+                    </li>
+                </>
+            );
+        }
+        else {
+            navItem = (
+                <>
+                    <li className="nav-item">
+                        <Link className="nav-link" aria-current="page" to="/">
+                            Trang chủ
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/wip">
+                            Đang phát triển (WIP)...
+                        </Link>
+                    </li>
+                </>
+            );
+        }
+        renderSignOut = (
+            <button type="submit" className="btn btn-primary" onClick={handleSignOut}>
+                Đăng xuất
+            </button>
+        );
+    }
+
     return (
         <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
             <div className="container-fluid">
@@ -27,17 +187,9 @@ export default function Navbar(props) {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <Link className="nav-link active" aria-current="page" to="/">
-                                Trang chủ
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/publicTest">
-                                Trang công khai
-                            </Link>
-                        </li>
+                        {navItem}
                     </ul>
+                    {renderSignOut}
                 </div>
             </div>
         </nav>

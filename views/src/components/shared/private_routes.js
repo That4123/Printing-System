@@ -19,7 +19,7 @@ function PrivateRoutes(prop) {
             setDecision(<Navigate to={"/signin"} />);
         }
         else {
-            let url = "/api/" + prop.validateRoute + "/authorization";
+            let url = "/api/authorization/" + prop.validateRole;
             axios.post(url, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`
