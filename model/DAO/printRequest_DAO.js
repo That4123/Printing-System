@@ -1,6 +1,6 @@
 var connect_DB = require("./connect_db");
 const getAllPrintRequest = (callback) => {
-  const query = "SELECT request_id, request_status FROM print_request";
+  const query = "SELECT request_id, request_status, user_name FROM print_request NATURAL JOIN user";
   connect_DB.query(query, (err, result) => {
     if (err) {
       console.error(err);
