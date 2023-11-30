@@ -65,3 +65,6 @@
     .btn-printingLog-ctn button:hover{
         background-color: #7474ff;
     }
+    .pringting-status-ctn h3{
+        text-align: center;
+    }

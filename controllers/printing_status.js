@@ -6,8 +6,9 @@ module.exports = {
         student.getPrintReqStatusList(req.cur_member.user_id, function (err,result) {
             if (err) {
                 res.status(err.code || 500).json({ message: err.message || 'Internal Server Error' });
+            }else{
+                res.json({ listPrintingLog: result });
             }
-            res.json({ listPrintingLog: result });
         });
     }],
     getConfigDetail:[authorization_model.loadCurMember, authorization_model.authorizeStudent, function (req, res) {

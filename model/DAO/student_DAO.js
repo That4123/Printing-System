@@ -45,13 +45,16 @@ async function makeRequest(req,res,next) {
 async function getPrintReqStatusList(student_id,res){
     getPrintReqStatusListId(student_id,function(err,listId){
         if (err){
-            res.status(500).json({message:"server err"});
+            res({ code: err.code || 500, message: err.message || "Có lỗi đã xảy ra khi truy vấn dữ liệu. Vui lòng thử lại sau" }, null);
+            return;
         }
         connect_DB.query("SELECT * FROM `printing_log` WHERE print_request_id IN (?)",[listId],function (err, allRowsResult) {
             if (err) {
-                res({ code: 500, message: "Có lỗi đã xảy ra khi truy vấn dữ liệu. Vui lòng thử lại sau" }, null);
+                res({ code: err.code || 500, message: err.message || "Có lỗi đã xảy ra khi truy vấn dữ liệu. Vui lòng thử lại sau" }, null);
+                return;
             } else if (allRowsResult.length === 0) {
-                res({ code: 400, message: "Không tìm thấy dữ liệu cho các print_request_id đã cho" }, null);
+                res({ code: 400, message: "Bạn không có yêu cầu in nào" }, null);
+                return;
             } else {
                 res(null, allRowsResult);
             }

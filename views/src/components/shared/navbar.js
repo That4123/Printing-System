@@ -108,7 +108,7 @@ export default function Navbar() {
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/printingStatus">
-                            Trạng thái in
+                            Lịch sử in ấn
                         </Link>
                     </li>
                     <li className="nav-item">
