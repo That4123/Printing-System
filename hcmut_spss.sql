@@ -105,9 +105,9 @@ CREATE TABLE IF NOT EXISTS `printing_log` (
   `printer_id` int(11) NOT NULL,
   `print_request_id` int(11) NOT NULL,
   `start_time` datetime NOT NULL DEFAULT current_timestamp(),
-  `end_time` datetime NOT NULL,
+  `end_time` datetime NOT NULL DEFAULT current_timestamp(),
   `num_of_page_to_print` int(11) NOT NULL,
-  `printing_status` enum('Pending','Accepted','Executing','Completed') NOT NULL,
+  `printing_status` enum('Pending','Accepted','Executing','Completed','Denied') NOT NULL,
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

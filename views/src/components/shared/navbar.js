@@ -69,7 +69,7 @@ export default function Navbar() {
         navigate("signin");
     }
 
-    let navItem = null, renderSignOut = null;
+    let navItem = null, renderSignOut = null, renderSignIn = null;
 
     if (!signin) {
         navItem = (
@@ -80,17 +80,17 @@ export default function Navbar() {
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/signin">
-                        Đăng nhập
-                    </Link>
-                </li>
-                <li className="nav-item">
                     <Link className="nav-link" to="/signup">
                         Đăng ký
                     </Link>
                 </li>
             </>
         )
+        renderSignIn = (
+            <Link className="nav-link" to="/signin">
+                Đăng nhập
+            </Link>
+        );
     }
     else {
         if (role === "Sinh viên") {
@@ -169,8 +169,10 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-            <div className="container-fluid">
+        <nav className="navbar navbar-expand-lg border-bottom border-body">
+            <div className="container-fluid" style={{ marginLeft: '50px', marginRight: '50px' }}>
+                <img src="https://e-learning.hcmut.edu.vn/pluginfile.php/1/core_admin/logocompact/300x300/1685588876/logoBK.png"
+                    alt="HCMUT Logo" width="50" height="50"/>
                 <Link className="navbar-brand" to="/">
                     HCMUT_SPSS
                 </Link>
@@ -189,6 +191,7 @@ export default function Navbar() {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {navItem}
                     </ul>
+                    {renderSignIn}
                     {renderSignOut}
                 </div>
             </div>

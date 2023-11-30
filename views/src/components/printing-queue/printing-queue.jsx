@@ -18,9 +18,10 @@ const PringtingQueue = () => {
   useEffect(() => {
     axios.get('/api/printRequest').then((res) => {
       if (res.status === 200) {
-        setPrintRequestList(res.data.filter((req) => req.request_status === 'waiting'))
-        setAcceptRequestList(res.data.filter((req) => req.request_status === 'accept'))
-        setRejectRequestList(res.data.filter((req) => req.request_status === 'reject'))
+        console.log(res);
+        setPrintRequestList(res.data.filter((req) => req.printing_status === 'Pending'))
+        setAcceptRequestList(res.data.filter((req) => req.printing_status === 'Accepted'))
+        setRejectRequestList(res.data.filter((req) => req.printing_status === 'Denied'))
       }
       else {
         console.log("Something happen");
@@ -69,13 +70,13 @@ const PringtingQueue = () => {
           </li>
         </ul>
         {buttonState[0] && printRequestList.map((printingReq) => (
-        <PringtingReqCard id={printingReq.request_id} user_name={printingReq.user_name} status={printingReq.request_status} />
+        <PringtingReqCard id={printingReq.print_request_id} user_name={printingReq.user_name} status={printingReq.printing_status} />
         ))}
         {buttonState[1] && acceptRequestList.map((printingReq) => (
-        <PringtingReqCard id={printingReq.request_id} user_name={printingReq.user_name} status={printingReq.request_status} />
+        <PringtingReqCard id={printingReq.print_request_id} user_name={printingReq.user_name} status={printingReq.printing_status} />
         ))}
         {buttonState[2] && rejectRequestList.map((printingReq) => (
-        <PringtingReqCard id={printingReq.request_id} user_name={printingReq.user_name} status={printingReq.request_status} />
+        <PringtingReqCard id={printingReq.print_request_id} user_name={printingReq.user_name} status={printingReq.printing_status} />
         ))}
     </section>
   );

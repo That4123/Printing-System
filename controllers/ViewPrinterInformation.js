@@ -1,4 +1,4 @@
-const printerModel = require('../model/DAO/Printer_DAO');
+const printerModel = require('../model/DAO/printer_DAO');
 const spsoModel = require('../model/DAO/SPSO_DAO');
 const path = require("path");
 
