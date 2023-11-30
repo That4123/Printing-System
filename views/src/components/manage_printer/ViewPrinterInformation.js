@@ -56,12 +56,20 @@ function ViewPrinterInfomation () {
     const handleSaveClick = (printer) => {
       // Thực hiện lưu thông tin máy in, ví dụ: gọi API để cập nhật thông tin máy in
       axios.post('/api/viewPrinterInfo/edit', printer)
-      .then(response => console.log(response.data.message))
-      .catch(error => {console.error('Error fetching printers:', error); setMessage(error)});
-      setReFresh(prevKey => prevKey + 1);
-      console.log('Đã lưu thông tin máy in:', printer.printer_id);
-      // Kết thúc chế độ chỉnh sửa
+      .then(response => { console.log(response.data.message)
+        setReFresh(prevKey => prevKey + 1);
+        console.log('Đã lưu thông tin máy in:', printer.printer_id);
+        setMessage(null)
+        // Kết thúc chế độ chỉnh sửa
       setIsEditing(false);
+      })
+      .catch(error => {
+        console.error('Error fetching printers:', error); 
+      setMessage(error.response.data.message)
+
+    });
+     
+      
     };
     const handleChangeStatus = (printer) => {
       if (printerStatus === 'Đang hoạt động') {
@@ -172,7 +180,7 @@ function ViewPrinterInfomation () {
                     </button>
                   </div>
               </div>
-              <p>{message ? 'Đã có lỗi vui lòng kiểm tra lại': ''}</p>
+              <p>{message ? message: ''}</p>
               {isEditing ? (
                   <button className= "btn1" onClick={() => handleSaveClick(editContent)}>Lưu</button>
                 ) : (
@@ -189,6 +197,8 @@ function ViewPrinterInfomation () {
         <div className='overlay'>  
         <div className="confirm-dialog">
           <div className="confirm-content">
+          <i className='ti-alert'></i>
+            <i>Cảnh báo</i>
             <p>Bạn có chắc chắn muốn xoá máy in này?</p>
             <button className = "btn1 huy"onClick={()=>handleConfirmRemove(selectedPrinter.printer_id)}>Xác nhận</button>
             <button className= "btn1 "onClick={()=> setRemovePrinterId(null)}>Không</button>

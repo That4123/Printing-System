@@ -20,7 +20,8 @@ function ViewAllPrinter() {
   const [printers, setPrinters] = useState([]);
   const navigate = useNavigate();
   const [reFresh, setReFresh] = useState(0)
-  const [message,setMessage] = useState(0)
+  const [message,setMessage] = useState(null)
+  const [removePrinterId, setRemovePrinterId] = useState(null);
   const [searchCriteria, setSearchCriteria] = useState({
     printer_id: '',
     campusName: '',
@@ -67,13 +68,14 @@ function ViewAllPrinter() {
     // Thực hiện các hành động cần thiết khi thành công
     setReFresh(prev => prev + 1);
     resetForm();
+    setMessage(null);
     console.log('Thêm máy in thành công');
     setAddNewPrinter(null);
   })
   .catch(error => {
     // Xử lý khi lệnh POST không thành công
-    setMessage(error.message);
-    console.error('Lỗi khi thêm máy in:', error);
+    setMessage(error.response.data.message);
+    console.error('Lỗi khi thêm máy in:', error.response.data.message);
   });
   }
   //Hàm handleToggle dùng để switch trạng thái máy in
@@ -91,8 +93,18 @@ function ViewAllPrinter() {
         .catch(error => console.error('Error fetching printers:', error));
       }
       setReFresh(prev=>prev+1)
-    //Gọi hàm enable/ disable Printer
   };
+  const handleConfirmRemove = (id) => {
+    //Thực hiện việc xoá máy in thông qua id máy in
+    //
+    axios.post('/api/viewAllPrinter/remove', {printer_id: id})
+    .then(response => console.log(response.data.message))
+    .catch(error => console.error('Error fetching printers:', error));
+    //Trả về trang View All Printer
+    setRemovePrinterId(null)
+    setReFresh(prev=>prev+1)
+
+  }
   const handleSearch = () => {
     // Thực hiện tìm kiếm dựa trên searchCriteria
   };
@@ -123,6 +135,9 @@ function ViewAllPrinter() {
     setAddNewPrinter(null)
 
   };
+  const handleRemovePrinter =(id)=>{
+    setRemovePrinterId(id);
+  }
     
     return (
     <div >
@@ -182,10 +197,26 @@ function ViewAllPrinter() {
             <button className='Switch-status-btn' onClick={()=>handleViewDetail(printer.printer_id)}>
               Detail
             </button>
+            <button className='delete-btn' onClick={()=>handleRemovePrinter(printer.printer_id)}>
+              <i className='ti-trash'/> Delete Printer
+            </button>
             
           </li>
         ))}
       </ul>
+      {removePrinterId && (
+        <div className='overlay'>  
+        <div className="confirm-dialog">
+          <div className="confirm-content">
+            <i className='ti-alert'></i>
+            <i>Cảnh báo</i>
+            <p>Bạn có chắc chắn muốn xoá máy in này?</p>
+            <button className = "btn1 huy"onClick={()=>handleConfirmRemove(removePrinterId)}>Xác nhận</button>
+            <button className= "btn1 "onClick={()=> setRemovePrinterId(null)}>Không</button>
+          </div>
+        </div>
+        </div>
+      )}
 
       {addNewPrinter&&(
         <div className='overlay'>
