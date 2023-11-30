@@ -16,6 +16,7 @@ function checkNoEmpty(obj) {
 function addNewPrinter(printer, controller) {
     if (!checkNoEmpty(printer)) {
         controller({ code: 400, message: "Vui lòng nhập đầy đủ thông tin máy in cần thêm!" }, null);
+        return;
     };
     let sql = "INSERT INTO printer (brand, model, description, campusName, roomNumber, buildingName, printer_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
     connect_DB.query(sql, [
@@ -39,6 +40,7 @@ function addNewPrinter(printer, controller) {
 function editPrinter(printer, controller) {
     if (!checkNoEmpty(printer)) {
         controller({ code: 400, message: "Vui lòng nhập đầy đủ thông tin cần cập nhật cho máy in!" }, null);
+        return;
     };
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer.printer_id], function (err, result) {
         if (err) {
@@ -73,6 +75,7 @@ function editPrinter(printer, controller) {
 function enablePrinter(printer_id, controller) {
     if (printer_id == undefined || printer_id == null || printer_id == "") {
         controller({ code: 400, message: "Vui lòng chọn id máy in cần kích hoạt!" }, null);
+        return;
     }
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
         if (err) {
@@ -100,6 +103,7 @@ function enablePrinter(printer_id, controller) {
 function disablePrinter(printer_id, controller) {
     if (printer_id == undefined || printer_id == null || printer_id == "") {
         controller({ code: 400, message: "Vui lòng chọn id máy in cần vô hiệu hoá!" }, null);
+        return;
     }
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
         if (err) {
@@ -127,6 +131,7 @@ function disablePrinter(printer_id, controller) {
 function removePrinter(printer_id, controller) {
     if (printer_id == undefined || printer_id == null || printer_id == "") {
         controller({ code: 400, message: "Vui lòng chọn id máy in cần xoá!" }, null);
+        return;
     }
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
         if (err) {
