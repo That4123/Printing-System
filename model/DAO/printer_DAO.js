@@ -11,8 +11,6 @@ const getPrinters = (callback) => {
   });
 };
 
-
-
 function getPrinterDetail(printer_id, controller) {
   connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
     if (err) {
