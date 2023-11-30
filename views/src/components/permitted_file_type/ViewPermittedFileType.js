@@ -90,7 +90,7 @@ function ViewPermittedFileType() {
                     ))}
                 </tbody>
             </table>
-            <button className='btn btn-dark' onClick={handleAddButtonClick}>Thêm</button>
+            <button className='btn btn-primary' onClick={handleAddButtonClick}>Thêm</button>
 
             {showPopup && (
                 <div className="popup-overlay">
@@ -121,7 +121,7 @@ function ViewPermittedFileType() {
                         </tr>
                         </tbody>
                     </table>
-                    <button className="btn btn-dark mt-2" type="submit">Xác nhận</button>
+                    <button className="btn btn-primary mt-2" type="submit">Xác nhận</button>
                     </form>
                 </div>
                 </div>
