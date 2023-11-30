@@ -1,32 +1,19 @@
 const path = require("path");
-const printer = require('../model/DAO/Printer_DAO');
-const student = require('../model/DAO/Student_DAO');
+const printer = require('../model/DAO/printer_DAO');
+const student = require('../model/DAO/student_DAO');
 const PrintRequest = require('../model/DTO/print_request')
 const printingRestriction = require('../model/DAO/permitted_file_type_DAO')
 const authorization_model = require('../model/DAO/authorization');
 module.exports = {
 
-    getPrinterListID: function (req, res) {
-        printer.getPrinters(function (err, result) {
-            if (err) {
-                res.status(err.code).json({ message: err.message });
-            } else {
-                res.json(result);
-            }
-        })
+    getPrintersDetail: function (req, res){
+        printer.getPrintersDetail(req.body.printer_id, res);
     },
-    getPrintersDetail: function (req, res) {
-        printer.getPrinterDetail(req.body.printer_id, function (err, result) {
-            if (err) {
-                res.status(err.code).json({ message: err.message });
-            }
-            else {
-                res.json({ printer: result[0] })
-            }
-        });
-    },
+    getPrinterListID: function (req, res){
+        printer.getPrinterListID(res)
+      },
     getPrinterList: function (req, res) {
-        printerModel.getPrinters((err, printers) => {
+        printer.getPrinters((err, printers) => {
             if (err) {
                 console.error(err);
                 res.status(500).send('Internal Server Error');
