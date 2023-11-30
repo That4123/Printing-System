@@ -4,12 +4,14 @@ const getPrinters = (callback) => {
   connect_DB.query(query, (err, result) => {
     if (err) {
       console.error(err);
-      callback({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+      callback(err, null);
     } else {
       callback(null, result);
     }
   });
 };
+
+
 
 function getPrinterDetail(printer_id, controller) {
   connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
