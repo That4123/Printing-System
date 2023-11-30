@@ -222,10 +222,23 @@ COMMIT;
 
 -- --------------------------------------------------------
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student`
+--
+
 CREATE TABLE `student` (
   `student_id` int(11) NOT NULL,
   `page_num_left` int(11) NOT NULL DEFAULT 10
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `student`
+--
+
+INSERT INTO `student` (`student_id`, `page_num_left`) VALUES
+(2000001, 10);
 
 --
 -- Indexes for dumped tables
@@ -247,7 +260,6 @@ ALTER TABLE `student`
 ALTER TABLE `student`
   ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`);
 COMMIT;
-
 
 
 --
