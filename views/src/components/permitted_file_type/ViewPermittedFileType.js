@@ -38,7 +38,12 @@ function ViewPermittedFileType() {
     }
     const handleAddFileSubmit = () => {
         // Perform the submission logic here
-        // ...
+        console.log(newFileType, newMaxFileSize)
+        axios.post('/api/viewPermittedFileType/add', {
+            newFileType,
+            newMaxFileSize
+        }).then(response => setPermittedFileTypes(response.data))
+        .catch(error => console.error('Error fetching permitted file types:', error));
     
         // After successful submission, close the pop-up and refresh the list
         handlePopupClose();

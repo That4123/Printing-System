@@ -15,8 +15,8 @@ const getPermittedFileTypeList = (req, res) => {
 
 function addNewPermittedFileType(req, res) {
     let permittedFileType = {
-        file_type: req.body.file_type,
-        max_file_size: req.body.max_file_size
+        file_type: req.body.newFileType,
+        max_file_size: req.body.newMaxFileSize
     };
     spsoModel.addNewPermittedFileType(permittedFileType, function (err, result) {
         if (err) {
