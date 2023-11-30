@@ -24,8 +24,38 @@ function getPrinterDetail(printer_id, controller) {
     }
   });
 }
-
+function getPrintersDetail(id, res) {
+  let sql = "SELECT * FROM printer WHERE printer_id = ?";
+  connect_DB.query(sql, [id], function (err, result, field) {
+      if (err) {
+          res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
+      }
+      else if (result.length == 0) {
+          res.status(400).json({ message: "Không có máy in" });
+      }
+      else {
+          res.json(result[0])
+          //console.log(result)
+      }
+  })
+}
+function getPrinterListID(res) {
+  let sql = "SELECT printer_id FROM printer";
+  connect_DB.query(sql, function (err, result, field) {
+      if (err) {
+          res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
+      }
+      else if (result.length == 0) {
+          res.status(400).json({ message: "Không có máy in" });
+      }
+      else {
+          res.json(result)
+      }
+  })
+}
 module.exports = {
   getPrinters,
-  getPrinterDetail
+  getPrinterDetail,
+  getPrinterListID,
+  getPrintersDetail
 };

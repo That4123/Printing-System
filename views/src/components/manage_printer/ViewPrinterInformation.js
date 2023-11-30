@@ -18,28 +18,81 @@ function ViewPrinterInfomation () {
     const [printers, setPrinters] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [removePrinterId, setRemovePrinterId] = useState(null);
-    const [editContent, setEditContent] = useState([])
+    const [selectedPrinter,setSelectedPrinter] = useState()
+    const [printerStatus, setPrinterStatus] = useState()
+    const [reFresh, setReFresh] = useState(0)
+    const [message, setMessage] = useState()
+    const [editContent, setEditContent] = useState({
+    brand: '',
+    model: '',
+    description: '',
+    campusName: '',
+    roomNumber: '',
+    buildingName: '',
+    printer_id:'',
+  })
+    
     const navigate = useNavigate();
     useEffect(() => {
         // lấy danh sách máy in từ backend
-        axios.post('/api/viewAllPrinter')
-          .then(response => setPrinters(response.data))
+        axios.post('/api/viewPrinterInfo/', {printer_id: parseInt(PrinterId)})
+          .then(response => setSelectedPrinter(response.data.printer))
           .catch(error => console.error('Error fetching printers:', error));
-      }, []);
+      }, [reFresh]);
+      useEffect(() => {
+        if (selectedPrinter) {
+          setPrinterStatus(selectedPrinter.printer_status);
+        }
+      }, [selectedPrinter]);
     const handleConfirmRemove = (id) => {
       //Thực hiện việc xoá máy in thông qua id máy in
       //
+      axios.post('/api/viewPrinterInfo/remove', {printer_id: id})
+      .then(response => console.log(response.data.message))
+      .catch(error => console.error('Error fetching printers:', error));
       //Trả về trang View All Printer
       navigate('/viewAllPrinter')
     }
     const handleSaveClick = (printer) => {
       // Thực hiện lưu thông tin máy in, ví dụ: gọi API để cập nhật thông tin máy in
+      axios.post('/api/viewPrinterInfo/edit', printer)
+      .then(response => console.log(response.data.message))
+      .catch(error => {console.error('Error fetching printers:', error); setMessage(error)});
+      setReFresh(prevKey => prevKey + 1);
       console.log('Đã lưu thông tin máy in:', printer.printer_id);
       // Kết thúc chế độ chỉnh sửa
       setIsEditing(false);
     };
+    const handleChangeStatus = (printer) => {
+      if (printerStatus === 'Đang hoạt động') {
+        setPrinterStatus('Không hoạt động')
+      axios.post('/api/viewPrinterInfo/disable', {printer_id: printer.printer_id})
+      .then(response => console.log(response.data.message))
+      .catch(error => console.error('Error fetching printers:', error));
+      //local render
+      }
+      else {
+        setPrinterStatus('Đang hoạt động')
+        axios.post('/api/viewPrinterInfo/enable', {printer_id: printer.printer_id})
+      .then(response => console.log(response.data.message))
+      .catch(error => console.error('Error fetching printers:', error));
+      }
+      
+
+
+    }
     const handleEditClick = (printer) => {
-      setEditContent(printer);
+      let editPrinter = {
+        brand: printer.brand,
+        model: printer.model,
+        description: printer.description,
+        campusName: printer.campusName,
+        roomNumber: printer.roomNumber,
+        buildingName: printer.buildingName,
+        printer_id: printer.printer_id
+    };
+      setReFresh(prevKey=>prevKey+1)
+      setEditContent(editPrinter);
       setIsEditing(true);
 
     };
@@ -49,7 +102,6 @@ function ViewPrinterInfomation () {
     const handleReturnBack= () => {
       navigate('/viewAllPrinter')
     }
-    const selectedPrinter = printers.find(printers => printers.printer_id === parseInt(PrinterId))
     const handleInputChange = (event) => {
       const { name, value } = event.target;
       setEditContent((prevPrinter) => ({ ...prevPrinter, [name]: value }));
@@ -112,23 +164,21 @@ function ViewPrinterInfomation () {
                 )}
               </div>
               <div>
-                <label>Trạng thái:</label> {isEditing ? (
+                <label>Trạng thái:</label> 
                   <div className='Edit-status'>
-                    <span>{editContent.printer_status}</span>
-                    <select name="printer_status" value={editContent.printer_status} onChange={handleInputChange}>
-                      <option value="Đang hoạt động">Bật</option>
-                      <option value="Không hoạt động">Tắt</option>
-                    </select>
+                    <span>{printerStatus}</span>
+                    <button  className ='btn1 change-btn' onClick={() => handleChangeStatus(selectedPrinter)}>
+                      {printerStatus ==='Đang hoạt động' ? 'Tắt' : 'Bật'}
+                    </button>
                   </div>
-                ) : (
-                  <span>{selectedPrinter.printer_status}</span>
-                )}
               </div>
+              <p>{message ? 'Đã có lỗi vui lòng kiểm tra lại': ''}</p>
               {isEditing ? (
                   <button className= "btn1" onClick={() => handleSaveClick(editContent)}>Lưu</button>
                 ) : (
                   <button className= "btn1" onClick={() => handleEditClick(selectedPrinter)}>Chỉnh sửa</button>
                 )}
+              
               <button className='btn1' onClick={()=>handleReturnBack()}>Trở về</button>
               <button className= "btn1 huy" onClick={()=> handleRemovePrinter(selectedPrinter.printer_id)}> Xoá</button>
               

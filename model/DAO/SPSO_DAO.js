@@ -25,7 +25,7 @@ function addNewPrinter(printer, controller) {
         printer.campusName,
         printer.roomNumber,
         printer.buildingName,
-        "Active"
+        printer.printer_status
     ], function (err, result) {
         if (err) {
             controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
@@ -85,7 +85,7 @@ function enablePrinter(printer_id, controller) {
             controller({ code: 400, message: "Máy in đã ở trạng thái kích hoạt trước khi cập nhật!" }, null);
         }
         else {
-            connect_DB.query("UPDATE printer SET printer_status = ? WHERE printer_id = ?", ["Active", printer_id], function (err, result) {
+            connect_DB.query("UPDATE printer SET printer_status = ? WHERE printer_id = ?", ["Đang hoạt động", printer_id], function (err, result) {
                 if (err) {
                     controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
                 }
@@ -112,7 +112,7 @@ function disablePrinter(printer_id, controller) {
             controller({ code: 400, message: "Máy in đã ở trạng thái vô hiệu hoá trước khi cập nhật!" }, null);
         }
         else {
-            connect_DB.query("UPDATE printer SET printer_status = ? WHERE printer_id = ?", ["Disable", printer_id], function (err, result) {
+            connect_DB.query("UPDATE printer SET printer_status = ? WHERE printer_id = ?", ["Không hoạt động", printer_id], function (err, result) {
                 if (err) {
                     controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
                 }

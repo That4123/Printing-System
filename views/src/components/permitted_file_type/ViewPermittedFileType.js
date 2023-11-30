@@ -18,14 +18,14 @@ const cookies = new Cookies();
 function ViewPermittedFileType() {
     const [permittedFileTypes, setPermittedFileTypes] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
-    const [newFileType, setNewFileType] = useState('');
-    const [newMaxFileSize, setNewMaxFileSize] = useState('');
+    const [file_type, setFileType] = useState('');
+    const [max_file_size, setMaxFileSize] = useState('');
 
     useEffect(() => {
         axios.post('/api/viewPermittedFileType')
-        .then(response => setPermittedFileTypes(response.data))
+        .then(response => {console.log(response.data); setPermittedFileTypes(response.data)})
         .catch(error => console.error('Error fetching permitted file types:', error));
-    }, [permittedFileTypes]);
+    }, []);
 
     const handleAddButtonClick = () => {
         setShowPopup(true);
@@ -33,21 +33,23 @@ function ViewPermittedFileType() {
 
     const handlePopupClose = () => {
         setShowPopup(false);
-        setNewFileType('');
-        setNewMaxFileSize('');
+        setFileType('');
+        setMaxFileSize('');
     }
     const handleAddFileSubmit = () => {
-        // Perform the submission logic here
-        // ...
-    
-        // After successful submission, close the pop-up and refresh the list
+        axios.post('/api/viewPermittedFileType/add', {
+            file_type,
+            max_file_size
+        }).then(axios.post('/api/viewPermittedFileType').then(response => setPermittedFileTypes(response.data)))
+        .catch(error => console.error('Error fetching permitted file types:', error));
+
         handlePopupClose();
-        // Fetch the updated list of permitted file types here
-      };
+    };
     
     const handleRemoveType = (permittedId) => {
-        axios.post('/api/viewPermittedFileType', permittedId)
-        .then(response => setPermittedFileTypes(response.data))
+        axios.post('/api/viewPermittedFileType/remove', {
+            permitted_id: permittedId
+        }).then(axios.post('/api/viewPermittedFileType').then(response => setPermittedFileTypes(response.data)))
         .catch(error => console.error('Error fetching permitted file types:', error));
     };
 
@@ -90,13 +92,13 @@ function ViewPermittedFileType() {
                     ))}
                 </tbody>
             </table>
-            <button className='btn btn-dark' onClick={handleAddButtonClick}>Thêm</button>
+            <button className='btn btn-primary' onClick={handleAddButtonClick}>Thêm</button>
 
             {showPopup && (
                 <div className="popup-overlay">
                 <div className="popup">
                     <h2 className="mt-1">Thêm loại file</h2>
-                    <form onSubmit={handleAddFileSubmit}>
+                    <form>
                     <table>
                         <tbody>
                         <tr>
@@ -104,8 +106,8 @@ function ViewPermittedFileType() {
                             <td>
                             <input
                                 type="text"
-                                value={newFileType}
-                                onChange={e => setNewFileType(e.target.value)}
+                                value={file_type}
+                                onChange={(e) => setFileType(e.target.value)}
                             />
                             </td>
                         </tr>
@@ -114,14 +116,14 @@ function ViewPermittedFileType() {
                             <td>
                             <input
                                 type="text"
-                                value={newMaxFileSize}
-                                onChange={e => setNewMaxFileSize(e.target.value)}
+                                value={max_file_size}
+                                onChange={e => setMaxFileSize(e.target.value)}
                             />
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <button className="btn btn-dark mt-2" type="submit">Xác nhận</button>
+                    <button className="btn btn-primary mt-2" onClick={handleAddFileSubmit}>Xác nhận</button>
                     </form>
                 </div>
                 </div>

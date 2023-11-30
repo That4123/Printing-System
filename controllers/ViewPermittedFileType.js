@@ -23,7 +23,7 @@ function addNewPermittedFileType(req, res) {
             res.status(err.code).json({ message: err.message });
         }
         else {
-            res.json({ message: "Thêm loại file được phép in thành công!" })
+            res.json({ message: "Thêm loại file được phép in thành công!" });
         }
     })
 }
