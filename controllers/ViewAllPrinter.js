@@ -11,6 +11,24 @@ printerModel.getPrinters(function (err, result) {
 });
 }
 
+function searchPrinter(req, res) {
+  let printer = {
+    campusName: req.body.campusName,
+    roomNumber: req.body.roomNumber,
+    buildingName: req.body.buildingName,
+    printer_id: req.body.printer_id,
+    printer_status: req.body.printer_status
+  };
+  spsoModel.searchPrinter(printer, function(err, result) {
+    if (err) {
+      res.status(err.code).json({ message: err.message });
+    }
+    else {
+      res.json(result);
+    }
+  })
+}
+
 function addNewPrinter(req, res) {
   let printer = {
     brand: req.body.brand,
@@ -86,6 +104,7 @@ function removePrinter(req, res) {
 
 module.exports = { 
   getPrinterList,
+  searchPrinter,
   addNewPrinter,
   editPrinter,
   enablePrinter,

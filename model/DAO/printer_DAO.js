@@ -17,7 +17,7 @@ function getPrinterDetail(printer_id, controller) {
       controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
     }
     else if (result.length == 0) {
-      controller({ code: 400, message: "Máy in cần kích hoạt không tồn tại!" }, null);
+      controller({ code: 400, message: "Máy in đã chọn không tồn tại!" }, null);
     }
     else {
       controller(null, result);
