@@ -2,12 +2,11 @@ const printerModel = require('../model/DAO/Printer_DAO');
 const spsoModel = require('../model/DAO/SPSO_DAO');
 const path = require("path");
 const getPrinterList = (req, res) => {
-  printerModel.getPrinters((err, printers) => {
+  printerModel.getPrinters(function (err, result) {
     if (err) {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
+      res.status(err.code).json({ message: err.message });
     } else {
-      res.json(printers);
+      res.json(result);
     }
   });
 };
@@ -84,7 +83,7 @@ function removePrinter(req, res) {
   })
 }
 
-module.exports = { 
+module.exports = {
   getPrinterList,
   addNewPrinter,
   editPrinter,
