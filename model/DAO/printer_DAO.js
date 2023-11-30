@@ -4,7 +4,7 @@ const getPrinters = (callback) => {
   connect_DB.query(query, (err, result) => {
     if (err) {
       console.error(err);
-      callback(err, null);
+      callback({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
     } else {
       callback(null, result);
     }
