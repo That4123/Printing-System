@@ -199,3 +199,24 @@ i.ti-printer {
   .Add-printer-form .btn1 {
     margin-top: 10px;
   }
+  .Add-printer-form p{
+    color: red;
+  }
+  .printer-information p{
+    color: red;
+  }
+  .btn1.change-btn{
+    float: right;
+    font-size: 18px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    padding:  3px 5px;
+    border-style:solid;
+    border-color: #000;
+    border-width: 1px;
+    min-width: 80px;
+    max-height: fit-content;
+    background-color: #f3cece;
+    border-radius: 5px;
+  }
+  

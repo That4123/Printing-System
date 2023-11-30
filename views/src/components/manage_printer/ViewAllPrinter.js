@@ -19,6 +19,8 @@ const cookies = new Cookies();
 function ViewAllPrinter() {
   const [printers, setPrinters] = useState([]);
   const navigate = useNavigate();
+  const [reFresh, setReFresh] = useState(0)
+  const [message,setMessage] = useState(0)
   const [searchCriteria, setSearchCriteria] = useState({
     printer_id: '',
     campusName: '',
@@ -31,26 +33,66 @@ function ViewAllPrinter() {
     brand: '',
     model: '',
     description: '',
-    campusName: '',
+    campusName: '1',
     roomNumber: '',
     buildingName: '',
-    printer_status: '',
+    printer_status: 'Không hoạt động',
   });
-
+  const resetForm = () => {
+    setNewPrinterContent({
+      brand: '',
+      model: '',
+      description: '',
+      campusName: '1',
+      roomNumber: '',
+      buildingName: '',
+      printer_status: 'Không hoạt động',
+    });
+  };
   useEffect(() => {
     // lấy danh sách máy in từ backend
     axios.post('/api/viewAllPrinter')
       .then(response => setPrinters(response.data))
       .catch(error => console.error('Error fetching printers:', error));
-  }, []);
+  }, [reFresh]);
+  //Hàm lưu thông tin máy in 
+  const handleSaveNewPrinter = (printer) =>{
+    // nội dung máy in mới được lưu trong newPrinterContent
+    console.log(printer)
+    axios.post('/api/viewAllPrinter/add', printer)
+  .then(response => {
+    // Xử lý khi lệnh POST thành công
+    console.log(response.data.message);
+    
+    // Thực hiện các hành động cần thiết khi thành công
+    setReFresh(prev => prev + 1);
+    resetForm();
+    console.log('Thêm máy in thành công');
+    setAddNewPrinter(null);
+  })
+  .catch(error => {
+    // Xử lý khi lệnh POST không thành công
+    setMessage(error.message);
+    console.error('Lỗi khi thêm máy in:', error);
+  });
+  }
   //Hàm handleToggle dùng để switch trạng thái máy in
-  const handleToggle = (printerId) => {
+  const handleToggle = (printer) => {
+      if (printer.printer_status==="Đang hoạt động") {
+        // disable
+        axios.post('/api/viewAllPrinter/disable', printer)
+      .then(response =>console.log(response.data.message))
+      .catch(error => console.error('Error fetching printers:', error));
+      }
+      else {
+        //enable
+        axios.post('/api/viewAllPrinter/enable', printer)
+        .then(response =>console.log(response.data.message))
+        .catch(error => console.error('Error fetching printers:', error));
+      }
+      setReFresh(prev=>prev+1)
     //Gọi hàm enable/ disable Printer
   };
-  const handleSaveNewPrinter = () =>{
-    // nội dung máy in mới được lưu trong newPrinterContent
-    console.log('Thêm máy in thành công')
-  }
   const handleSearch = () => {
     // Thực hiện tìm kiếm dựa trên searchCriteria
   };
@@ -76,6 +118,8 @@ function ViewAllPrinter() {
     setNewPrinterContent((prevCriteria) => ({ ...prevCriteria, [name]: value }));
   };
   const handleCancel = () => {
+    resetForm()
+    setMessage(null)
     setAddNewPrinter(null)
 
   };
@@ -132,7 +176,7 @@ function ViewAllPrinter() {
               Room: {printer.roomNumber} <br></br>
               Status: {printer.printer_status==='Đang hoạt động' ? 'On' : 'Off'}
             </div>
-            <button  className ='Switch-status-btn' onClick={() => handleToggle(printer.printer_id)}>
+            <button  className ='Switch-status-btn' onClick={() => handleToggle(printer)}>
               {printer.printer_status ==='Đang hoạt động' ? 'Disable' : 'Enable'}
             </button>
             <button className='Switch-status-btn' onClick={()=>handleViewDetail(printer.printer_id)}>
@@ -183,8 +227,9 @@ function ViewAllPrinter() {
                   <option value="Đang hoạt động">Đang hoạt động</option>
                 </select>
               </div>
+                <p>{message? message : '' }</p>
                 <button className='btn1 huy' onClick={()=> handleCancel()}>Huỷ</button>
-                <button className='btn1' onClick={()=> handleSaveNewPrinter()}>Thêm</button>
+                <button className='btn1' onClick={()=> handleSaveNewPrinter(newPrinterContent)}>Thêm</button>
           </div>  
           </div>
         </div>
