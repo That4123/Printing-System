@@ -18,14 +18,14 @@ const cookies = new Cookies();
 function ViewPermittedFileType() {
     const [permittedFileTypes, setPermittedFileTypes] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
-    const [file_type, setfile_type] = useState('');
-    const [max_file_size, setmax_file_size] = useState('');
+    const [file_type, setFileType] = useState('');
+    const [max_file_size, setMaxFileSize] = useState('');
 
     useEffect(() => {
         axios.post('/api/viewPermittedFileType')
-        .then(response => setPermittedFileTypes(response.data))
+        .then(response => {console.log(response.data); setPermittedFileTypes(response.data)})
         .catch(error => console.error('Error fetching permitted file types:', error));
-    }, [permittedFileTypes]);
+    }, []);
 
     const handleAddButtonClick = () => {
         setShowPopup(true);
@@ -33,23 +33,23 @@ function ViewPermittedFileType() {
 
     const handlePopupClose = () => {
         setShowPopup(false);
-        setfile_type('');
-        setmax_file_size('');
+        setFileType('');
+        setMaxFileSize('');
     }
     const handleAddFileSubmit = () => {
-        console.log(file_type, max_file_size)
         axios.post('/api/viewPermittedFileType/add', {
             file_type,
             max_file_size
-        }).then(response => setPermittedFileTypes(response.data))
+        }).then(axios.post('/api/viewPermittedFileType').then(response => setPermittedFileTypes(response.data)))
         .catch(error => console.error('Error fetching permitted file types:', error));
 
         handlePopupClose();
     };
     
     const handleRemoveType = (permittedId) => {
-        axios.post('/api/viewPermittedFileType', permittedId)
-        .then(response => setPermittedFileTypes(response.data))
+        axios.post('/api/viewPermittedFileType/remove', {
+            permitted_id: permittedId
+        }).then(axios.post('/api/viewPermittedFileType').then(response => setPermittedFileTypes(response.data)))
         .catch(error => console.error('Error fetching permitted file types:', error));
     };
 
@@ -107,7 +107,7 @@ function ViewPermittedFileType() {
                             <input
                                 type="text"
                                 value={file_type}
-                                onChange={(e) => setfile_type(e.target.value)}
+                                onChange={(e) => setFileType(e.target.value)}
                             />
                             </td>
                         </tr>
@@ -117,7 +117,7 @@ function ViewPermittedFileType() {
                             <input
                                 type="text"
                                 value={max_file_size}
-                                onChange={e => setmax_file_size(e.target.value)}
+                                onChange={e => setMaxFileSize(e.target.value)}
                             />
                             </td>
                         </tr>
