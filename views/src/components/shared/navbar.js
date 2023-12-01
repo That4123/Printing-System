@@ -112,8 +112,8 @@ export default function Navbar() {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/buyPrintingPages">
-                            Mua trang in (WIP)
+                        <Link className="nav-link" to="/buyPaper">
+                            Mua trang in
                         </Link>
                     </li>
                 </>

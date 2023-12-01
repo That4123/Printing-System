@@ -19,7 +19,6 @@ const PrintDetail=({selectedId,printingLogList, isOpen, closeModal})=>{
 
   useEffect(() => {
     
-    console.log('//////1////');
     if (isOpen && (selectedId!=null)&&printingLogList) { 
       setLoadingDetail(true);
       axios.post('/api/viewPrinterInfo', {
@@ -97,7 +96,6 @@ const PrintingStatus = () => {
 
   const [selectedId,setSelectedId]=useState();
   useEffect(() => {
-    console.log('2');
     axios
       .post('/api/printingStatus/', {}, {
         headers: {

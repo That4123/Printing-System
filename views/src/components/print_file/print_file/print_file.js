@@ -118,7 +118,7 @@ const PrintingFile = () => {
         .then((response) => {
             setCompleteState(sharedState);
             setModalCompleteOpen(true);
-            setErrorMessage();
+            setErrorMessage(null);
         })
         .catch((error) => {
           if (error.response) {
@@ -130,6 +130,7 @@ const PrintingFile = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
+    if (errorMessage) return;
     axios.post("/api/printFile/makePrintRequest", {
       completeState,
     },{
@@ -138,7 +139,7 @@ const PrintingFile = () => {
         }
     })
         .then((response) => {
-            // console.log("user_id:",response);
+            setErrorMessage(null);
         })
         .catch((error) => {
           if (error.response) {

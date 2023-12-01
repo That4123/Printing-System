@@ -1,5 +1,5 @@
 const path = require("path");
-const student = require('../model/DAO/Student_DAO');
+const student = require('../model/DAO/student_DAO');
 const authorization_model = require('../model/DAO/authorization');
 module.exports = {
     getPrintReqStatusList: [authorization_model.loadCurMember, authorization_model.authorizeStudent, function (req, res) {
