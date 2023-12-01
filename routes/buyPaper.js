@@ -5,5 +5,7 @@ const buyPaper_router = express.Router();
 
 
 buyPaper_router.post('/load', buyPage.loadPaperNumber);
-buyPaper_router.post('/log',buyPage.loadPurchaseLog);
-module.exports =buyPaper_router;
+buyPaper_router.post('/log', buyPage.loadPurchaseLog);
+buyPaper_router.post('/register', buyPage.registerPurchase);
+buyPaper_router.post('/confirm', buyPage.confirmPurchase);
+module.exports = buyPaper_router;
