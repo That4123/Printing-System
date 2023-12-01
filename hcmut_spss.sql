@@ -222,11 +222,87 @@ COMMIT;
 
 -- --------------------------------------------------------
 
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `student`
+--
 
+CREATE TABLE `student` (
+  `student_id` int(11) NOT NULL,
+  `page_num_left` int(11) NOT NULL DEFAULT 10
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `student`
+--
+
+INSERT INTO `student` (`student_id`, `page_num_left`) VALUES
+(2000001, 10);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `student`
+--
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`student_id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `student`
+--
+ALTER TABLE `student`
+  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`);
+COMMIT;
 
 
 --
+-- --------------------------------------------------------
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `paper_purchase_log`
+--
+
+CREATE TABLE `paper_purchase_log` (
+  `purchase_log_id` int (11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL,
+  `register_date` VARCHAR(255) NOT NULL,
+  `number_of_page` VARCHAR (11) NOT NULL,
+  `amount` VARCHAR(255) NOT NULL,
+  `status` VARCHAR(255) NOT NULL,
+  `purchase_date` VARCHAR(255),
+   PRIMARY KEY (`purchase_log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `paper_purchase_log`
+--
+
+INSERT INTO `paper_purchase_log` (`purchase_log_id`,`student_id`, `register_date`, `number_of_page`, `amount`, `status`, `purchase_date`) VALUES
+(1, 2000001,  '2023-11-30 14:30:45.123', '30', '12000', 'Đã thanh toán', '2023-12-01 14:30:45.123'),
+(2, 2000001,  '2023-11-29 14:30:45.123', '50', '20000','Chưa thanh toán',''),
+(3, 2000001,  '2023-10-31 14:30:45.123', '10', '4000','Đã thanh toán','2023-11-28 14:30:45.123'),
+(4, 2000001,  '2023-09-30 14:30:45.123', '20', '8000','Đã thanh toán','2023-10-15 14:30:45.123');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `paper_purchase_log`
+-- Constraints for dumped tables
+--
+
+--
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

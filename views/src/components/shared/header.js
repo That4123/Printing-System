@@ -5,14 +5,16 @@ import Popper from 'popper.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Navbar from "./navbar";
+import Footer from "./footer";
 
 
 function Header() {
     return (
-        <>
+        <div style={{display:"flex", flexDirection:"column",justifyContent:"space-between", minHeight: "100vh"}}>
             <Navbar />
-            <Outlet />
-        </>
+            <Outlet/>
+            <Footer/>
+        </div>
     )
 }
 

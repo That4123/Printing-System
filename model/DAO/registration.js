@@ -68,14 +68,25 @@ function register(res, obj) {
                 if (err)
                     res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
                 else {
-                    let member = {
-                        user_id: obj.user_id,
-                        email: obj.email,
-                        state: "Đang hoạt động",
-                        role: "Sinh viên"
-                    };
-                    const token = jwt.sign(member, "RANDOM-TOKEN", { expiresIn: "15m" });
-                    res.json({ member: member, token });
+                    connect_DB.query("INSERT INTO student (student_id, page_num_left) VALUES (?, ?)", [
+                        obj.user_id,
+                        10,
+                    ], function (err, result) {
+                        if (err) {
+                            // Handle error in user_details insert
+                            res.status(500).json({ message: "Hệ thống gặp vấn đề khi thêm thông tin chi tiết người dùng. Vui lòng thử lại sau" });
+                        } else {
+                            // Both inserts successful
+                            let member = {
+                                user_id: obj.user_id,
+                                email: obj.email,
+                                state: "Đang hoạt động",
+                                role: "Sinh viên"
+                            };
+                            const token = jwt.sign(member, "RANDOM-TOKEN", { expiresIn: "15m" });
+                            res.json({ member: member, token });
+                        }
+                    });
                 }
             })
         }
