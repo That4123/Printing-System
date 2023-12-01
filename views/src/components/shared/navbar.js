@@ -75,12 +75,12 @@ export default function Navbar() {
         navItem = (
             <>
                 <li className="nav-item">
-                    <Link className="nav-link" aria-current="page" to="/">
+                    <Link className="nav-link" aria-current="page" to="/" style={{color: "white", fontWeight: "600"}}>
                         Trang chủ
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/signup">
+                    <Link className="nav-link" to="/signup" style={{color: "white", fontWeight: "600"}}>
                         Đăng ký
                     </Link>
                 </li>
@@ -149,7 +149,7 @@ export default function Navbar() {
             navItem = (
                 <>
                     <li className="nav-item">
-                        <Link className="nav-link" aria-current="page" to="/">
+                        <Link className="nav-link" aria-current="page" to="/" >
                             Trang chủ
                         </Link>
                     </li>
