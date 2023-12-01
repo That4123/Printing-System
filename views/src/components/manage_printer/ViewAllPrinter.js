@@ -22,6 +22,7 @@ function ViewAllPrinter() {
   const [reFresh, setReFresh] = useState(0)
   const [message,setMessage] = useState(null)
   const [removePrinterId, setRemovePrinterId] = useState(null);
+  const [filter, setFilter] = useState()
   const [searchCriteria, setSearchCriteria] = useState({
     printer_id: '',
     campusName: '',
@@ -55,7 +56,7 @@ function ViewAllPrinter() {
     axios.post('/api/viewAllPrinter')
       .then(response => setPrinters(response.data))
       .catch(error => console.error('Error fetching printers:', error));
-  }, [reFresh]);
+  }, [reFresh]); 
   //Hàm lưu thông tin máy in 
   const handleSaveNewPrinter = (printer) =>{
     // nội dung máy in mới được lưu trong newPrinterContent
@@ -107,6 +108,23 @@ function ViewAllPrinter() {
   }
   const handleSearch = () => {
     // Thực hiện tìm kiếm dựa trên searchCriteria
+    setFilter(1);
+    axios.post('/api/viewAllPrinter/search', searchCriteria)
+  .then(response => {
+    // Xử lý khi lệnh POST thành công
+    setPrinters(response.data);
+    console.log(response.data.message);
+    
+    // Thực hiện các hành động cần thiết khi thành công
+    console.log('Tìm kiếm máy in thành công');
+
+  })
+  .catch(error => {
+    // Xử lý khi lệnh POST không thành công
+    setMessage(error.response.data.message);
+    console.error('Lỗi khi thêm máy in:', error.response.data.message);
+  });
+
   };
   const setColorByStatus = (status)=> {
     const colorMap = {
@@ -137,6 +155,10 @@ function ViewAllPrinter() {
   };
   const handleRemovePrinter =(id)=>{
     setRemovePrinterId(id);
+  }
+  const handleClearFilter =() =>{
+    setFilter(null)
+    setReFresh(prev=>prev+1)
   }
     
     return (
@@ -176,8 +198,9 @@ function ViewAllPrinter() {
           <option value="Không hoạt động">Off</option>
         </select>
       </label>
-      <button  onClick={handleSearch}> <i className='ti-search'></i> Search</button>
+      <button  onClick={handleSearch}> <i className='ti-filter'></i> Filter</button>
         </div>
+        {filter? <button  className='close-filter' onClick={handleClearFilter}> <i className='ti-close'></i> Clear Filter </button>: ''}
       </div>
       <ul className='Printer-List'>
         {printers.map(printer => (

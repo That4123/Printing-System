@@ -107,6 +107,32 @@ function checkValidPagesToPrint(obj){
     if (/^(\d+(-\d+)?)(,\d+(-\d+)?)*$/.test(obj.pages_to_print)) return true;
     return false;
 }
+function getPaperNumber(student_id,callback) {
+    let sql = "SELECT `page_num_left` FROM `student` WHERE student_id=?";
+    connect_DB.query(sql, [
+        student_id   
+    ],function (err, result) {
+        if (err) {
+            callback({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+        }
+        else {
+            callback(null,result);
+        }
+    });
+}
+function loadPurchaseLog(student_id,callback) {
+    let sql = "SELECT * FROM `paper_purchase_log` WHERE student_id=?";
+    connect_DB.query(sql, [
+        student_id   
+    ],function (err, result) {
+        if (err) {
+            callback({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+        }
+        else {
+            callback(null,result);
+        }
+    });
+}
 module.exports = {
     makePrintRequest,
     checkNoEmpty,
@@ -114,4 +140,7 @@ module.exports = {
     checkValidPagesToPrint,
     makeRequest,
     getPrintReqStatusList,
-    getConfigDetail}
+    getConfigDetail,
+    getPaperNumber,
+    loadPurchaseLog
+}

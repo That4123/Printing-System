@@ -16,7 +16,7 @@ const viewAllPrinterRoute = require("./routes/ViewAllPrinter");
 const viewPrinterInfo = require("./routes/ViewPrinterInformation");
 const permittedFileTypeRoute = require("./routes/ViewPermittedFileType")
 const printRequestRoute = require("./routes/print_request")
-
+const buyPaper = require("./routes/buyPaper")
 const printingStatusRoute = require("./routes/printing_status.js")
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -68,6 +68,7 @@ app.use("/api/uploadfile", printFileRoute)
 
 app.use("/api/viewPermittedFileType", permittedFileTypeRoute);
 
+app.use("/api/buyPaper", buyPaper);
 app.use("/api/printRequest", printRequestRoute);
 
 app.listen(8080);
