@@ -2,17 +2,32 @@ import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
 import format from "date-fns/format";
+import { IoIosSearch } from "react-icons/io";
 
 const PrintingLog = () => {
+  const [defaultPrintingLog, setDefaultPrintingLog] = useState([]);
   const [printingLog, setPrintingLog] = useState([]);
   const [searchType, setSearchType] = useState("");
-  const [searchValue, setSearchValue] = useState("")
+  const [searchValue, setSearchValue] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (searchType==="end_time") {
+      const newLog = defaultPrintingLog.filter((log) => {if (log[searchType].search(searchValue)!==-1) return true; return false})
+      setPrintingLog(newLog);
+    }
+    else {
+      const newLog = defaultPrintingLog.filter((log) => log[searchType].toString()===searchValue);
+      setPrintingLog(newLog);
+    }
+  };
 
   useEffect(() => {
     axios
       .get("/api/printingLog")
       .then((res) => {
         if (res.status === 200) {
+          setDefaultPrintingLog(res.data);
           setPrintingLog(res.data);
         } else {
           console.log("Something happen");
@@ -26,20 +41,42 @@ const PrintingLog = () => {
   return (
     <section className="container d-flex flex-column justify-content-center align-items-center mt-5">
       <p className="fs-2 fw-bold">Lịch sử in ấn</p>
-      <div className="d-flex flex-row mb-3">
+      <form className="d-flex flex-row mb-3" onSubmit={handleSubmit}>
         <p className="me-2 mb-0 mt-1">Tìm kiếm theo</p>
         <div>
-          <select class="form-select" aria-label="Default select example">
+          <select value={searchType} class="form-select" aria-label="Default select example" onChange={(e) => {setSearchType(e.target.value)}}>
             <option selected>Lựa chọn</option>
-            <option value={searchType} onChange={(e) => setSearchType(e.target.value)}>Người yêu cầu</option>
-            <option value={searchType} onChange={(e) => setSearchType(e.target.value)}>Máy in</option>
-            <option value={searchType} onChange={(e) => setSearchType(e.target.value)}>Thời gian</option>
+            <option
+              value="user_name"
+            >
+              Người yêu cầu
+            </option>
+            <option
+              value="printer_id"
+            >
+              Máy in
+            </option>
+            <option
+              value="end_time"
+            >
+              Thời gian
+            </option>
           </select>
         </div>
         <div>
-        <input class="form-control ms-2" type="text" placeholder="Nhập giá trị tìm kiếm" aria-label="default input example"></input>
+          <input
+            class="form-control ms-2"
+            value={searchValue}
+            type="text"
+            placeholder="Nhập giá trị tìm kiếm"
+            aria-label="default input example"
+            onChange={(e) => {setSearchValue(e.target.value)}}
+          ></input>
         </div>
-      </div>
+        <button className="btn btn-outline-dark px-2 ms-3" type="submit">
+          <IoIosSearch size={23}/>
+        </button>
+      </form>
       <table className="table">
         <thead>
           <tr>
@@ -53,7 +90,7 @@ const PrintingLog = () => {
           </tr>
         </thead>
         <tbody>
-          {printingLog.filter((log) => log[searchType] === searchValue).map((log) => (
+          {printingLog.map((log) => (
             <tr>
               <th scope="row">{log.log_id}</th>
               <td>{log.user_name}</td>
