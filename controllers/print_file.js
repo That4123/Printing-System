@@ -4,6 +4,7 @@ const student = require('../model/DAO/Student_DAO');
 const PrintRequest = require('../model/DTO/print_request')
 const printingRestriction = require('../model/DAO/permitted_file_type_DAO')
 const authorization_model = require('../model/DAO/authorization');
+const { crossOriginResourcePolicy } = require("helmet");
 module.exports = {
 
     getPrintersDetail: function (req, res){
@@ -57,13 +58,18 @@ module.exports = {
             !student.checkValidPagesToPrint(req.body.completeState)) {
             res.status(400).json({ message: "Vui lòng bấm nút hoàn thành để cập nhật yêu cầu" });
         }
-        student.makePrintRequest(req, res)
-            .then(() => {
-                // res.status(200).json({message:"success make request"});
-            })
-            .catch((error) => {
-                // res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
-            })
+        student.checkValidNumberToPrint(req,function(err,result){
+            if(err){
+                console.log(err);
+                res.status(err.code||500).json({message:err.message||"server error"});
+                return;
+            }
+            else{
+                req.body.completeState.num_of_page_to_print=result;
+                student.makePrintRequest(req, res);
+            }
+        });
+        
 
     }],
     makeUpdateRequest: [authorization_model.loadCurMember, authorization_model.authorizeStudent, function (req, res) {
@@ -76,6 +82,6 @@ module.exports = {
         if (!student.checkValidPagesToPrint(req.body.sharedState)) {
             res.status(400).json({ message: "nhập sai định dạng trang in" });
         }
-        res.status(200).json({});
+        res.status(200).json();
     }]
 }
