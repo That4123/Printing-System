@@ -219,6 +219,18 @@ function removePermittedFileType(permitted_id, controller) {
     })
 }
 
+const getPrintingLog = (callback) => {
+    connect_DB.query("SELECT * FROM printing_log JOIN user ON printing_log.student_id=user.user_id", function (err, result) {
+        if (err) {
+            console.log(err)
+            callback(err, null)
+        }
+        else {
+            callback(null, result)
+        }
+    })
+}
+
 module.exports = {
     addNewPrinter,
     editPrinter,
@@ -227,5 +239,6 @@ module.exports = {
     removePrinter,
     addNewPermittedFileType,
     editPermittedFileType,
-    removePermittedFileType
+    removePermittedFileType,
+    getPrintingLog
 }
