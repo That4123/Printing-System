@@ -32,7 +32,7 @@ const registerPurchase = [authorization_model.loadCurMember, authorization_model
     }
   })
 }]
-const confirmPurchase = [authorization_model.loadCurMember, authorization_model.authorizeStuden, (req, res) => {
+const confirmPurchase = [authorization_model.loadCurMember, authorization_model.authorizeStudent, (req, res) => {
   studentModel.confirmPurchase(req.body.purchase_log_id, req.cur_member.user_id, function (err, result) {
     if (err) {
       res.status(err.code).json({ message: err.message });

@@ -28,15 +28,47 @@ function BuyPaper() {
     register_date: '',
     status: 'Chưa thanh toán'
   })
+  const resetPaperNumBuy=()=>{
+    let newPaperNumBuy = {
+    number_of_page: '',
+    amount: '',
+    register_date: '',
+    status: 'Chưa thanh toán'
+    }
+    setPaperNumBuy(newPaperNumBuy)
+  }
 
   const handleBuyPaper = (BuyDetail) => {
       // Gọi hàm thực hiện mua paper
       //Truyền vào object paperNumBuy
+        axios.post('/api/buyPaper/register',BuyDetail,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(response=>{
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.error('Error register:', error)
+        })
+        setReFresh(prev=>prev+1);
+        resetPaperNumBuy();
       setConfirmBuyPaper(null);
   }
   const handlePurchase = (id) =>{
       //Truyền vào id của purchase_log_id
-
+      axios.post('/api/buyPaper/confirm',{purchase_log_id:id},{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response=>{
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error('Error confirm purchase:', error)
+      })
       setConfirmPurchase(1)
       // Thực hiện chuyển trạng thái của purchase log sang Đã thanh toán
       // Cộng thêm số trang tương ứng vào tài khoản sinh viên
@@ -68,7 +100,7 @@ function BuyPaper() {
         .catch(error => {
           console.error('Error fetching Purchase Log:', error)
         })
-    },[])
+    },[reFresh])
     const handleInputChangeBuyPaper = (e) => {
       const { name, value } = e.target;
     setPaperNumBuy((prevCriteria) => ({ ...prevCriteria, [name]: value }));
@@ -80,7 +112,7 @@ function BuyPaper() {
     }
       return (
       <div>
-        <h1>Dịch vụ mua thêm trang in </h1>
+        <h1 id='buy-service'>Dịch vụ mua thêm trang in </h1>
         <div>
           <div className='Buy-paper-box'>
             <div>
@@ -143,7 +175,7 @@ function BuyPaper() {
             <i>Xác nhận</i>
             <p>Xác nhận mua trang in? </p>
             <button className = "btn1 xacnhan"onClick={()=>handleBuyPaper(paperNumBuy)}>Xác nhận</button>
-            <button className= "btn1 "onClick={()=> setConfirmBuyPaper(null)}>Không</button>
+            <button className= "btn1 khong"onClick={()=> setConfirmBuyPaper(null)}>Không</button>
           </div>
         </div>
         </div>
@@ -155,7 +187,7 @@ function BuyPaper() {
             <i className='ti-bell'></i>
             <i>Thông báo</i>
             <p>Sinh viên vui lòng vào trang BKPay để thanh toán trước khi hết hạn! </p>
-            <button className= "btn1 "onClick={()=> setConfirmPurchase(null)}>OK</button>
+            <button className= "btn1 "onClick={()=> {setConfirmPurchase(null); setReFresh(prev=>prev+1);}}>OK</button>
           </div>
         </div>
         </div>
