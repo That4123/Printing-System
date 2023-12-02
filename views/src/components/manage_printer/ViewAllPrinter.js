@@ -21,6 +21,7 @@ function ViewAllPrinter() {
   const navigate = useNavigate();
   const [reFresh, setReFresh] = useState(0)
   const [message,setMessage] = useState(null)
+  const [message2,setMessage2] = useState(null)
   const [removePrinterId, setRemovePrinterId] = useState(null);
   const [filter, setFilter] = useState()
   const [searchCriteria, setSearchCriteria] = useState({
@@ -54,7 +55,10 @@ function ViewAllPrinter() {
   useEffect(() => {
     // lấy danh sách máy in từ backend
     axios.post('/api/viewAllPrinter')
-      .then(response => setPrinters(response.data))
+      .then(response => {
+        setPrinters(response.data)
+        if(response.data.length === 0) setPrinters(null)
+      })
       .catch(error => console.error('Error fetching printers:', error));
   }, [reFresh]); 
   //Hàm lưu thông tin máy in 
@@ -108,20 +112,22 @@ function ViewAllPrinter() {
   }
   const handleSearch = () => {
     // Thực hiện tìm kiếm dựa trên searchCriteria
+
     setFilter(1);
     axios.post('/api/viewAllPrinter/search', searchCriteria)
   .then(response => {
     // Xử lý khi lệnh POST thành công
     setPrinters(response.data);
     console.log(response.data.message);
-    
+    setMessage2(null)
     // Thực hiện các hành động cần thiết khi thành công
     console.log('Tìm kiếm máy in thành công');
 
   })
   .catch(error => {
     // Xử lý khi lệnh POST không thành công
-    setMessage(error.response.data.message);
+    setMessage2(error.response.data.message);
+    setPrinters(null);
     console.error('Lỗi khi thêm máy in:', error.response.data.message);
   });
 
@@ -202,6 +208,8 @@ function ViewAllPrinter() {
         </div>
         {filter? <button  className='close-filter' onClick={handleClearFilter}> <i className='ti-close'></i> Clear Filter </button>: ''}
       </div>
+      {printers?(
+        <div>
       <ul className='Printer-List'>
         {printers.map(printer => (
           <li key={printer.id} className='Printer-Block'>
@@ -227,6 +235,10 @@ function ViewAllPrinter() {
           </li>
         ))}
       </ul>
+      </div>
+      ):
+        <p id='error-message2'> {message2?message2:'Hiện không có máy in nào trong danh sách'} </p>
+      }
       {removePrinterId && (
         <div className='overlay'>  
         <div className="confirm-dialog">

@@ -251,3 +251,9 @@ i.ti-printer {
     font-family: Arial, Helvetica, sans-serif;
 
   }
+  #error-message2 {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }

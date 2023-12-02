@@ -15,7 +15,7 @@ table {
   }
   .Buy-paper-box {
     display: block;
-    margin: 10px 20px;
+    margin: 10px 35px;
     background-color: rgb(179, 250, 229);
     width: 500px;
     font-size: 18px;
@@ -27,7 +27,7 @@ table {
     display: inline;
   }
   .Buy-paper-box  p{
-    color: green;
+    color: green; 
     font-size: 20px;
     display: inline;
     padding: 5px 0;
@@ -52,3 +52,14 @@ table {
     font-size: 22px;
 
   }
+  .btn1.khong{
+    margin-left: 0px;
+    background-color: rgb(245, 161, 161);
+  }
+.Purchase-log h2{
+  margin-left: 20px;
+}
+#buy-service
+{
+  margin-left: 20px;
+}

@@ -142,6 +142,11 @@ export default function Navbar() {
                             Quản lý máy in
                         </Link>
                     </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/printing-log">
+                            Lịch sử in ấn
+                        </Link>
+                    </li>
                 </>
             );
         }
