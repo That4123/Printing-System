@@ -40,9 +40,61 @@ function Homepage() {
   };
 
   return (
-    <div className="homepage-container" style={backgroundImageStyle}>
-      
-    </div>
+    <>
+      <div className="homepage-container" style={backgroundImageStyle}></div>
+      <section class="py-8 py-md-11 " style={{marginTop: "1rem"}}>
+        <div class="container">
+          <div class="row">
+            
+
+            <div class="col-12 col-md-4">
+              <div class="card  mb-6 mb-md-0" style={{width: "18rem"}}>
+                <div class="card-body">
+                  <h5 class="card-title text-center text-success" style={{fontSize: "x-large"}}><i class="bi bi-globe"></i>
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">Giới thiệu</h6>
+                  <p class="card-text">HCMUT_SPSS là dịch vụ in ấn thông minh phục vu cho sinh viên và cán bộ trường Đại học Bách Khoa, ĐHQG-HCM. Hệ thống được quản lý
+                  dưới quyền của SPSO.
+                  </p>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <div class="card mb-6 mb-md-0" style={{width: "18rem"}}>
+                <div class="card-body ">
+                  <h5 class="card-title text-center text-success" style={{fontSize: "x-large"}}><i class="bi bi-suitcase"></i>
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">Mục tiêu</h6>
+                  <p class="card-text">Hệ thống với mục tiêu mang lại trải nghiệm tốt nhất cho sinh viên và cán bộ khi thực hiện in ấn ngay tại trường học
+                  và dễ dàng trong việc quản lý thời gian hoàn thành in ấn.
+                  </p>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-12 col-md-4 ">
+              <div class="card  mb-6 mb-md-0" style={{width: "18rem"}}>
+                <div class="card-body">
+                  <h5 class="card-title text-center text-success" style={{fontSize: "x-large"}}><i
+                      class="bi bi-telephone"></i>
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">Quy định</h6>
+                  <p class="card-text">Các tài liệu được in cần đảm bảo quy định về nội dung, không được chứa những nội dung không phù hợp. Ngoải ra các loại file in và dung lượng file
+                  cũng cần đáp ứng đúng quy định của hệ thống.</p>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+    
   );
 }
 

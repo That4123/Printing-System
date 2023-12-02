@@ -23,7 +23,8 @@ import PrintFile from './components/print_file/print_file/print_file.js'
 import PrintingRequest from './components/printing-request/printingRequest.jsx';
 import ViewPermittedFileType from './components/permitted_file_type/ViewPermittedFileType';
 import PrintingStatus  from './components/printing_status/printing_status';
-
+import PrintingLog from './components/printing-log/printing-log.jsx';
+import BuyPaper from './components/buyPage/buyPaper.js';
 function App() {
   return (
     <Routes>
@@ -34,10 +35,12 @@ function App() {
         <Route path='printFile' element={<PrintFile />} />
         <Route path='printingStatus' element={<PrintingStatus/>} />
         <Route path='publicTest' element={<PublicTest />} />
+        <Route path='buyPaper' element={<BuyPaper />} />
         <Route element={<PrivateRoutes validateRole={"spso"} />} >
           <Route path='protectedTest' element={<ProtectedTest />} />
           <Route path='printing-queue' element={<PringtingQueue />} />
           <Route path='printing-queue/printing-request/:request_id' element={<PrintingRequest />} />
+          <Route path='printing-log' element={<PrintingLog />} />
         </Route>
         <Route path='viewAllPrinter' element={<ViewAllPrinter />} />
         <Route path='viewPrinterInformation/:PrinterId' element={<ViewPrinterInformation />} />

@@ -1,4 +1,5 @@
 var connect_DB = require('./connect_db');
+var mysql = require("mysql2");
 
 function checkNoEmpty(obj) {
     if (obj == null || typeof obj !== 'object' || JSON.stringify(obj) === '{}') return false;
@@ -12,10 +13,69 @@ function checkNoEmpty(obj) {
     return true;
 }
 
+function searchPrinter(printer, controller) {
+    let validSearch = false;
+    let sql = "SELECT * FROM printer WHERE ";
+    if (printer.printer_id) {
+        sql += "printer_id = ";
+        sql += mysql.escape(printer.printer_id);
+        validSearch = true;
+    }
+    if (printer.campusName) {
+        if (validSearch) {
+            sql += " AND ";
+        }
+        sql += "campusName = ";
+        sql += mysql.escape(printer.campusName);
+        validSearch = true;
+    }
+    if (printer.buildingName) {
+        if (validSearch) {
+            sql += " AND ";
+        }
+        sql += "buildingName = ";
+        sql += mysql.escape(printer.buildingName);
+        validSearch = true;
+    }
+    if (printer.roomNumber) {
+        if (validSearch) {
+            sql += " AND ";
+        }
+        sql += "roomNumber = ";
+        sql += mysql.escape(printer.roomNumber);
+        validSearch = true;
+    }
+    if (printer.printer_status) {
+        if (validSearch) {
+            sql += " AND ";
+        }
+        sql += "printer_status = ";
+        sql += mysql.escape(printer.printer_status);
+        validSearch = true;
+    }
+    if (validSearch) {
+        connect_DB.query(sql, function(err, result) {
+            if (err) {
+                controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+            }
+            else if (result.length === 0) {
+                controller({ code: 400, message: "Máy in cần tìm không tồn tại!" }, null);
+            }
+            else {
+                controller(null, result);
+            }
+        })
+    }
+    else {
+        controller({ code: 400, message: "Vui lòng nhập đầy đủ thông tin máy in cần tìm!" }, null)
+    }
+}
+
 
 function addNewPrinter(printer, controller) {
     if (!checkNoEmpty(printer)) {
         controller({ code: 400, message: "Vui lòng nhập đầy đủ thông tin máy in cần thêm!" }, null);
+        return;
     };
     let sql = "INSERT INTO printer (brand, model, description, campusName, roomNumber, buildingName, printer_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
     connect_DB.query(sql, [
@@ -39,6 +99,7 @@ function addNewPrinter(printer, controller) {
 function editPrinter(printer, controller) {
     if (!checkNoEmpty(printer)) {
         controller({ code: 400, message: "Vui lòng nhập đầy đủ thông tin cần cập nhật cho máy in!" }, null);
+        return;
     };
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer.printer_id], function (err, result) {
         if (err) {
@@ -73,6 +134,7 @@ function editPrinter(printer, controller) {
 function enablePrinter(printer_id, controller) {
     if (printer_id == undefined || printer_id == null || printer_id == "") {
         controller({ code: 400, message: "Vui lòng chọn id máy in cần kích hoạt!" }, null);
+        return;
     }
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
         if (err) {
@@ -100,6 +162,7 @@ function enablePrinter(printer_id, controller) {
 function disablePrinter(printer_id, controller) {
     if (printer_id == undefined || printer_id == null || printer_id == "") {
         controller({ code: 400, message: "Vui lòng chọn id máy in cần vô hiệu hoá!" }, null);
+        return;
     }
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
         if (err) {
@@ -127,6 +190,7 @@ function disablePrinter(printer_id, controller) {
 function removePrinter(printer_id, controller) {
     if (printer_id == undefined || printer_id == null || printer_id == "") {
         controller({ code: 400, message: "Vui lòng chọn id máy in cần xoá!" }, null);
+        return;
     }
     connect_DB.query("SELECT * FROM printer WHERE printer_id = ?", [printer_id], function (err, result) {
         if (err) {
@@ -214,7 +278,20 @@ function removePermittedFileType(permitted_id, controller) {
     })
 }
 
+const getPrintingLog = (callback) => {
+    connect_DB.query("SELECT * FROM printing_log JOIN user ON printing_log.student_id=user.user_id", function (err, result) {
+        if (err) {
+            console.log(err)
+            callback(err, null)
+        }
+        else {
+            callback(null, result)
+        }
+    })
+}
+
 module.exports = {
+    searchPrinter,
     addNewPrinter,
     editPrinter,
     enablePrinter,
@@ -222,5 +299,6 @@ module.exports = {
     removePrinter,
     addNewPermittedFileType,
     editPermittedFileType,
-    removePermittedFileType
+    removePermittedFileType,
+    getPrintingLog
 }

@@ -75,12 +75,12 @@ export default function Navbar() {
         navItem = (
             <>
                 <li className="nav-item">
-                    <Link className="nav-link" aria-current="page" to="/">
+                    <Link className="nav-link" aria-current="page" to="/" style={{color: "white", fontWeight: "600"}}>
                         Trang chủ
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/signup">
+                    <Link className="nav-link" to="/signup" style={{color: "white", fontWeight: "600"}}>
                         Đăng ký
                     </Link>
                 </li>
@@ -108,12 +108,12 @@ export default function Navbar() {
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/printingStatus">
-                            Trạng thái in
+                            Lịch sử in ấn
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/buyPrintingPages">
-                            Mua trang in (WIP)
+                        <Link className="nav-link" to="/buyPaper">
+                            Mua trang in
                         </Link>
                     </li>
                 </>
@@ -142,6 +142,11 @@ export default function Navbar() {
                             Quản lý máy in
                         </Link>
                     </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/printing-log">
+                            Lịch sử in ấn
+                        </Link>
+                    </li>
                 </>
             );
         }
@@ -149,7 +154,7 @@ export default function Navbar() {
             navItem = (
                 <>
                     <li className="nav-item">
-                        <Link className="nav-link" aria-current="page" to="/">
+                        <Link className="nav-link" aria-current="page" to="/" >
                             Trang chủ
                         </Link>
                     </li>
