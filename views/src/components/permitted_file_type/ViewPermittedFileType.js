@@ -55,7 +55,7 @@ function ViewPermittedFileType() {
 
     return (
         <div className='m-5'>
-            <h1 className='text-center m-4'>Cấu hình giới hạn in ấn</h1>
+            <h1 className='text-center m-4' style={{color: "black"}}>Cấu hình giới hạn in ấn</h1>
             <table className='table table-striped'>
                 <thead>
                     <tr>
