@@ -12,8 +12,8 @@ const cookies = new Cookies();
 const printer_detail_cfm=(printerDetail)=>{
   return(
     <>
-      <label className='selected-printer-confirm-lb'>Máy in đã chọn</label>
-      <div className='selected-printer-confirm-ctn'>
+      <label className='selected-printer-confirm-lb' style={{fontWeight: "600"}}>Máy in đã chọn</label>
+      <div className='selected-printer-confirm-ctn' style={{fontWeight: "600"}}>
         <h6>Máy in {printerDetail.printer_id}</h6>
         <div className='slt-prt-info'>
           <span className='slt-prt-cfm-left'>
@@ -37,7 +37,7 @@ const print_config_cfm=(print_request)=>{
     <>
       <label className='selected-printer-confirm-lb'>Cấu hình in</label>
       <div className='selected-printer-confirm-ctn'>
-        <div className='slt-cfg-cfm-left'>
+        <div className='slt-cfg-cfm-left' style={{fontWeight: "600"}}>
           <p className='cfm-config-p'>Khổ giấy: {print_request.paper_size}</p>
           <p className='cfm-config-p'>{ (print_request.is_double_side)? 'In hai mặt':'In một mặt'}</p>
           <p className='cfm-config-p'>Số bản in: {print_request.number_of_copies}</p>
@@ -153,7 +153,7 @@ const PrintingFile = () => {
   return (
     <div>
         <div className="title-config-container">
-            <h1>In ấn</h1>
+            <h1 style={{color: "black"}}>In ấn</h1>
             <h5>Vui lòng thiết lập các thông tin sau đây</h5>
         </div>
         <div className="prtview-button-container">
@@ -171,13 +171,13 @@ const PrintingFile = () => {
                     >
                         <h2>Xác nhận in ấn</h2>
                         <div className='upload-file-ctn'>
-                          <label className='upload-file-lb'>File tải lên</label>
-                          <div className='upload-file-name'>{completeState.file_name}</div>
+                          <label className='upload-file-lb' style={{fontWeight: "600"}}>File tải lên</label>
+                          <div className='upload-file-name'style={{fontWeight: "600"}} >{completeState.file_name}</div>
                         </div>
                         {printer_detail_cfm(printerDetail)}
                         {print_config_cfm(completeState)}
                         <div className='btn-ctn-cfm-cfg'>
-                          <p className='cfm-config-p'>Chắc chắn đây là thiết lập của bạn?</p>
+                          <p className='cfm-config-p'style={{fontWeight: "600"}}>Chắc chắn đây là thiết lập của bạn?</p>
                           <button onClick={() => {closeModal(); handleSubmit()}} className="cfm-config-btn">Đúng. Yêu cầu in</button>
                         </div>
                     </Modal>

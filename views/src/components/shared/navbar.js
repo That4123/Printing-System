@@ -147,6 +147,11 @@ export default function Navbar() {
                             Lịch sử in ấn
                         </Link>
                     </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/report">
+                            Báo cáo thống kê
+                        </Link>
+                    </li>
                 </>
             );
         }

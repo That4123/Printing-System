@@ -59,8 +59,8 @@ const PrintDetail=({selectedId,printingLogList, isOpen, closeModal})=>{
         <>
           <h2>Yêu cầu in số {printingLogList[selectedId].log_id}</h2>
           <div className='upload-file-ctn'>
-            <label className='upload-file-lb'>File tải lên</label>
-            <div className='upload-file-name'>{printConfigSelected.file_name}</div>
+            <label className='upload-file-lb' style={{fontWeight: "600"}}>File tải lên</label>
+            <div className='upload-file-name' style={{fontWeight: "600"}}>{printConfigSelected.file_name}</div>
           </div>
           {printer_detail_cfm(printerSelected)}
           {print_config_cfm(printConfigSelected)}

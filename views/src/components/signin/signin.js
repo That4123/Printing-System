@@ -47,7 +47,7 @@ function SignIn() {
     }
     return (
         <form>
-            <div className="mb-3">
+            <div className="mb-3" style={{marginLeft: "20%", marginRight: "20%"}}>
                 <label htmlFor="exampleInputEmail1" className="form-label">
                     Email
                 </label>
@@ -60,7 +60,7 @@ function SignIn() {
                     onChange={(e) => setEmail(e.target.value)}
                 />
             </div>
-            <div className="mb-3">
+            <div className="mb-3" style={{marginLeft: "20%", marginRight: "20%"}}>
                 <label htmlFor="exampleInputPassword1" className="form-label">
                     Mật khẩu
                 </label>
@@ -72,7 +72,7 @@ function SignIn() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <button type="submit" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>
+            <button type="submit" className="btn btn-primary" onClick={(e) => handleSubmit(e)} style={{marginLeft: "20%", marginRight: "20%"}}>
                 Đăng nhập
             </button>
             <p>{errorMessage ? errorMessage : ""}</p>

@@ -32,7 +32,9 @@
     }
 
 
-
+.configbtn{
+    margin-right:100px
+}
 .cfm-config-ctn{
     position: fixed;
     top: 0;
