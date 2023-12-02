@@ -30,6 +30,7 @@ function addNewPermittedFileType(req, res) {
 
 function editPermittedFileType(req, res) {
     let permittedFileType = {
+        permitted_id: req.body.permitted_id,
         file_type: req.body.file_type,
         max_file_size: req.body.max_file_size
     };
