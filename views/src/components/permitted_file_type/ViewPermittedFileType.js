@@ -16,8 +16,11 @@ import "./ViewPermittedFileType.css";
 const cookies = new Cookies();
 
 function ViewPermittedFileType() {
+    const [reFresh, setReFresh] = useState(0)
     const [permittedFileTypes, setPermittedFileTypes] = useState([]);
-    const [showPopup, setShowPopup] = useState(false);
+    const [addPopup, setAddPopup] = useState(false);
+    const [editPopup, setEditPopup] = useState(false);
+    const [permitted_id, setPermittedId] = useState('');
     const [file_type, setFileType] = useState('');
     const [max_file_size, setMaxFileSize] = useState('');
 
@@ -25,36 +28,57 @@ function ViewPermittedFileType() {
         axios.post('/api/viewPermittedFileType')
         .then(response => {console.log(response.data); setPermittedFileTypes(response.data)})
         .catch(error => console.error('Error fetching permitted file types:', error));
-    }, []);
+    }, [reFresh]);
 
     const handleAddButtonClick = () => {
-        setShowPopup(true);
+        setAddPopup(true);
     }
 
-    const handlePopupClose = () => {
-        setShowPopup(false);
+    const handleAddPopupClose = () => {
+        setAddPopup(false);
         setFileType('');
         setMaxFileSize('');
     }
+
     const handleAddFileSubmit = () => {
         axios.post('/api/viewPermittedFileType/add', {
+            file_type,
+            max_file_size
+        }).then(response => {
+            setReFresh(prev => prev + 1)
+        }).catch(error => console.error('Error fetching permitted file types:', error));
+
+        handleAddPopupClose();
+    };
+    
+    const handleEditFileType = (permitted_id) => {
+        setPermittedId(permitted_id);
+        setEditPopup(true);
+    }
+
+    const handleEditPopupClose = () => {
+        setFileType('');
+        setMaxFileSize('');
+        setEditPopup(false);
+    }
+
+    const handleEditFileSubmit = () => {
+        axios.post('/api/viewPermittedFileType/edit', {
+            permitted_id,
             file_type,
             max_file_size
         }).then(axios.post('/api/viewPermittedFileType').then(response => setPermittedFileTypes(response.data)))
         .catch(error => console.error('Error fetching permitted file types:', error));
 
-        handlePopupClose();
-    };
-    
-    const handleModifyFileType = (permittedId) => {
-        
+        handleEditPopupClose();
     }
 
-    const handleRemoveFileType = (permittedId) => {
+    const handleRemoveFileType = (permitted_id) => {
         axios.post('/api/viewPermittedFileType/remove', {
-            permitted_id: permittedId
-        }).then(axios.post('/api/viewPermittedFileType').then(response => setPermittedFileTypes(response.data)))
-        .catch(error => console.error('Error fetching permitted file types:', error));
+            permitted_id
+        }).then(response => {
+            setReFresh(prev => prev + 1)
+        }).catch(error => console.error('Error fetching permitted file types:', error));
     };
 
     return (
@@ -77,7 +101,7 @@ function ViewPermittedFileType() {
                             <td>{permittedFileType.file_type}</td>
                             <td>{permittedFileType.max_file_size}</td>
                             <td>
-                                <button className='modifyButton' onClick={() => handleModifyFileType(permittedFileType.permitted_id)}>
+                                <button className='modifyButton' onClick={() => handleEditFileType(permittedFileType.permitted_id)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-down-left" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M9.636 2.5a.5.5 0 0 0-.5-.5H2.5A1.5 1.5 0 0 0 1 3.5v10A1.5 1.5 0 0 0 2.5 15h10a1.5 1.5 0 0 0 1.5-1.5V6.864a.5.5 0 0 0-1 0V13.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
                                         <path fill-rule="evenodd" d="M5 10.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1H6.707l8.147-8.146a.5.5 0 0 0-.708-.708L6 9.293V5.5a.5.5 0 0 0-1 0z"/>
@@ -98,7 +122,7 @@ function ViewPermittedFileType() {
             </table>
             <button className='btn btn-primary' onClick={handleAddButtonClick}>Thêm</button>
 
-            {showPopup && (
+            {addPopup && (
                 <div className="popup-overlay">
                 <div className="popup">
                     <div>
@@ -129,11 +153,51 @@ function ViewPermittedFileType() {
                         </tr>
                         </tbody>
                     </table>
-                    <button className="btn btn-primary mt-2" onClick={handleAddFileSubmit}>Xác nhận</button>
+                    <button className="btn btn-danger mt-2 mx-5" onClick={()=> handleAddPopupClose}>Huỷ</button>
+                    <button className="btn btn-primary mt-2 mx-5" onClick={handleAddFileSubmit}>Xác nhận</button>
                     </form>
                 </div>
                 </div>
             )}
+
+            {editPopup && (
+                <div className="popup-overlay">
+                <div className="popup">
+                    <div>
+                        <h2 className="mt-1">Cập nhật loại file</h2>
+                    </div>
+                    <form>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>Loại file:</td>
+                            <td>
+                            <input
+                                type="text"
+                                value={file_type}
+                                onChange={(e) => setFileType(e.target.value)}
+                            />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kích thước tối đa:</td>
+                            <td>
+                            <input
+                                type="text"
+                                value={max_file_size}
+                                onChange={e => setMaxFileSize(e.target.value)}
+                            />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                    <button className="btn btn-danger mt-2 mx-5" onClick={()=> handleEditPopupClose}>Huỷ</button>
+                    <button className="btn btn-primary mt-2 mx-5" onClick={handleEditFileSubmit}>Xác nhận</button>
+                    </form>
+                </div>
+                </div>
+            )}  
         </div>
     );
 }

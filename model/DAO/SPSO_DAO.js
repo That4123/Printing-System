@@ -233,25 +233,31 @@ function addNewPermittedFileType(permittedFileType, controller) {
 function editPermittedFileType(permittedFileType, controller) {
     if (!checkNoEmpty(permittedFileType)) {
         controller({ code: 400, message: "Vui lòng nhập đầy đủ thông tin cần cập nhật cho loại file được phép in!" }, null);
-    }
-    else if (result.length == 0) {
-        controller({ code: 400, message: "Loại file được phép in cần cập nhật không tồn tại!" }, null);
-    }
-    else {
-        let sql = "UPDATE permitted_file_type SET file_type = ?, max_file_size = ? WHERE peritted_id = ?";
-        connect_DB.query(sql, [
-            permittedFileType.file_type,
-            permittedFileType.max_file_size,
-            permittedFileType.permitted_id
-        ], function (err, result) {
-            if (err) {
-                controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
-            }
-            else {
-                controller(null, result);
-            }
-        });
-    }
+        return;
+    };
+    connect_DB.query("SELECT * FROM permitted_file_type WHERE permitted_id = ?", [permittedFileType.permitted_id], function (err, result) {
+        if (err) {
+            controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+        }
+        else if (result.length == 0) {
+            controller({ code: 400, message: "Loại file được phép in cần cập nhật không tồn tại!" }, null);
+        }
+        else {
+            let sql = "UPDATE permitted_file_type SET file_type = ?, max_file_size = ? WHERE permitted_id = ?";
+            connect_DB.query(sql, [
+                permittedFileType.file_type,
+                permittedFileType.max_file_size,
+                permittedFileType.permitted_id
+            ], function (err, result) {
+                if (err) {
+                    controller({ code: 500, message: "Có lỗi đã xảy ra. Vui lòng thử lại sau" }, null);
+                }
+                else {
+                    controller(null, result);
+                }
+            });
+        }
+    })
 }
 
 function removePermittedFileType(permitted_id, controller) {
