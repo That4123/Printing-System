@@ -80,9 +80,9 @@ function BuyPaper() {
     }
       return (
       <div>
-        <h1>Dịch vụ mua thêm trang in </h1>
+        <h1 style={{color: "black", marginRight: "30%", marginLeft: "40%"}}>Dịch vụ mua thêm trang in </h1>
         <div>
-          <div className='Buy-paper-box'>
+          <div className='Buy-paper-box'style={{marginLeft: "35%"}}>
             <div>
             <h3 >Số trang in hiện còn lại của sinh viên: </h3>
             <p style={{display:'inline-block'}}> {paperNum} </p>

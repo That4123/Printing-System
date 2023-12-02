@@ -163,7 +163,7 @@ function ViewAllPrinter() {
     
     return (
     <div >
-      <h1>Printer List</h1>
+      <h1 style={{color: "black", marginLeft: "40%"}}>Danh sách máy in</h1>
       <div>
         <button className='btn add-btn' onClick={()=>handleAddNewPrinter()}>
           <i className='ti-plus'></i>
