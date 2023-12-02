@@ -25,6 +25,7 @@ import ViewPermittedFileType from './components/permitted_file_type/ViewPermitte
 import PrintingStatus  from './components/printing_status/printing_status';
 import PrintingLog from './components/printing-log/printing-log.jsx';
 import BuyPaper from './components/buyPage/buyPaper.js';
+import Report from './components/report/report.jsx';
 function App() {
   return (
     <Routes>
@@ -41,6 +42,7 @@ function App() {
           <Route path='printing-queue' element={<PringtingQueue />} />
           <Route path='printing-queue/printing-request/:request_id' element={<PrintingRequest />} />
           <Route path='printing-log' element={<PrintingLog />} />
+          <Route path='report' element={<Report />} />
         </Route>
         <Route path='viewAllPrinter' element={<ViewAllPrinter />} />
         <Route path='viewPrinterInformation/:PrinterId' element={<ViewPrinterInformation />} />
