@@ -93,6 +93,14 @@ function Homepage() {
           </div>
         </div>
       </section>
+      <div className="container-info">
+          <div> Hệ thống bao gồm </div>
+          <div className="number"> 10+</div>
+          <div> Máy in</div>
+          <div>Phục vụ cho hơn</div>
+          <div className="number">15.000</div>
+          <div>Cán bộ và sinh viên</div>
+      </div>
     </>
     
   );
