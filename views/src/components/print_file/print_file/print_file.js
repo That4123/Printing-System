@@ -70,6 +70,7 @@ const print_config_cfm=(print_request)=>{
 const PrintingFile = () => {
   const token = cookies.get("TOKEN");
   const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState('upload');
   const [isModalNotiOpen,setModalNoti]=useState(false);
   const [responseMessage,setResponseMessage]=useState('');
@@ -206,18 +207,20 @@ const PrintingFile = () => {
         </div>
       <div>
         {renderPage()}
-        {currentPage === 'config' && (
+        {
           <div className='config-container'>
             <div className="attribute-config side-page-config">
               <button value="1" className="back-btn">
-                Quay lại
+                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Quay lại
+                </Link>
               </button>
               <button value="2" className="complete-btn" onClick={() => handleComplete()}>
                 Hoàn thành
               </button>
             </div>
           </div>
-        )}
+        }
         <ModalNoti isModalNotiOpen={isModalNotiOpen} setModalNoti={setModalNoti} message={responseMessage} />
       </div>
     </div>
