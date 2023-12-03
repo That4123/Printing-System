@@ -72,10 +72,10 @@ const PrintingFile = () => {
   const renderPage = () => {
     switch (currentPage) {
       case 'upload':
-        return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
+        return <FileUpload sharedState={sharedState} setSharedState={handleValueChange}/>;
         break;
         case 'printer':
-         return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
+         return <ChoosePrinter sharedState={sharedState} setSharedState={handleValueChange}/>;
         break;
       case 'config':
         return <PrintingConfig sharedState={sharedState}
@@ -83,7 +83,7 @@ const PrintingFile = () => {
           handleSubmit={handleSubmit}/>;
         break;
       default:
-        return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
+        return <FileUpload value={sharedState} onValueChange={handleValueChange}/>;
     }
   };  
   const [printerDetail,setPrinterDetail ]=useState(0);

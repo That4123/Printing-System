@@ -10,7 +10,9 @@ const PrintingConfig=({ sharedState, setSharedState }) => {
     
     const handleChange = (event,name) => setSharedState(name, event.target.value);
     const toggleActive = (value) => setSharedState("is_double_side", value);
-
+    useEffect(() => {
+        console.log(sharedState)
+      }, []);
 
     
 
