@@ -53,10 +53,19 @@ module.exports = {
 
     },
     makePrintRequest: [authorization_model.loadCurMember, authorization_model.authorizeStudent, function (req, res) {
-        if (!student.checkNoEmpty(req.body.completeState) ||
-            !student.checkValidNumberOfCopies(req.body.completeState) ||
-            !student.checkValidPagesToPrint(req.body.completeState)) {
-            res.status(400).json({ message: "Vui lòng bấm nút hoàn thành để cập nhật yêu cầu" });
+           
+        if (!student.checkNoEmpty(req.body.sharedState,res)) return;
+        if (!student.checkValidNumberOfCopies(req.body.sharedState)) {
+            res.status(400).json({ message: "Số bản in phải là tự nhiên lớn hơn 0" });
+            return;
+        }
+        if (!student.checkValidPagesToPrint(req.body.sharedState)) {
+            res.status(400).json({ message: "Nhập sai định dạng trang in" });
+            return;
+        }
+        if(!req.body.completeState){
+            res.status(400).json({message:"Bạn vui lòng điền thông tin và ấn \'Hoàn thành\' ở mục \'Cấu hình in\'"});
+            return;
         }
         student.checkValidNumberToPrint(req,function(err,result){
             if(err){
@@ -73,15 +82,20 @@ module.exports = {
 
     }],
     makeUpdateRequest: [authorization_model.loadCurMember, authorization_model.authorizeStudent, function (req, res) {
-        if (!student.checkNoEmpty(req.body.sharedState)) {
-            res.status(400).json({ message: "Vui lòng không để trống trường nào!" });
-        }
+        console.log(123);
+        if(req.body.sharedState===null){
+            res.status(400).json({message:"Bạn chưa nhập thông tin nào, hãy bắt đầu bằng cách bấm nút \"Tải file lên\" "});
+            return;
+        }   
+        if (!student.checkNoEmpty(req.body.sharedState,res)) return;
         if (!student.checkValidNumberOfCopies(req.body.sharedState)) {
             res.status(400).json({ message: "Số bản in phải là tự nhiên lớn hơn 0" });
+            return;
         }
         if (!student.checkValidPagesToPrint(req.body.sharedState)) {
             res.status(400).json({ message: "nhập sai định dạng trang in" });
+            return;
         }
-        res.status(200).json();
+        res.status(200).json({message: "Cập nhật yêu cầu in thành công, bấm \"In!\" để gửi yêu cầu"});
     }]
 }

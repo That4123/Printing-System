@@ -9,7 +9,7 @@
     margin: 20px 0;
     }
 
-    .prtview-button-container  button {
+    .prtview-button-container  .configbtn,.config-printbtn {
     background-color: #0F172B;
     color: #FFFFFF;
     border: 1px solid #cccccc;
@@ -19,7 +19,7 @@
     transition: all 0.2s ease-in-out;
     }
 
-    .prtview-button-container  button:hover {
+    .prtview-button-container  .configbtn:hover {
     color: #9999FF;
     }
     .config-printbtn-span .config-printbtn{
@@ -33,7 +33,7 @@
 
 
 .configbtn{
-    margin-right:100px
+    margin-right:10px
 }
 .cfm-config-ctn{
     position: fixed;
