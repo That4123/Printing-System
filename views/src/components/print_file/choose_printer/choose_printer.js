@@ -9,7 +9,7 @@ import { useRef, useState, useEffect } from "react";
 
 import axios from "axios";
 
-const ChoosePrinter = ({ value, onValueChange }) => {
+const ChoosePrinter = ({ sharedState, setSharedState }) => {
   const containerRef = useRef(null);
   const [listPrinter, setListPrinter] = useState([])
   const scrollLeft = () => {
@@ -18,7 +18,7 @@ const ChoosePrinter = ({ value, onValueChange }) => {
     }
   };
   const handleChange = (id) => {
-    onValueChange('printer_id', id);
+    setSharedState('printer_id', id);
   };
   const [printerChoose, setPrinterChoose] = useState([])
   const [printerView, setPrinterView] = useState([])
@@ -37,6 +37,13 @@ const ChoosePrinter = ({ value, onValueChange }) => {
         .catch(error => console.error('Error fetching printers:', error));
   
   }
+  useEffect(() => {
+    if (sharedState.printer_id !== ''){
+      setPrinterChoose(sharedState.printer_id)
+      setShowChoosePrinter(true)
+      handleClickChoose(sharedState.printer_id)
+    }
+  }, []);
   useEffect(() => {
     
     axios.get('/api/printFile')
@@ -61,7 +68,7 @@ const ChoosePrinter = ({ value, onValueChange }) => {
     <div className="info-printer">
         <img src={printerFill}  alt={`Printer ${numberPrinter}`}/>
         <div className="info-printer-name">
-        <div style={{fontSize:"30px", fontWeight: "700", marginLeft: "5vw"}}>Máy in {listPrinter[numberPrinter].printer_id}</div>
+        <div style={{fontSize:"30px", fontWeight: "700", marginLeft: "5vw"}}>Máy in {printerChoose.printer_id}</div>
         <div className="info-printer-text">
             <div className="info-printer-text-1">
               <div>Tên thương hiệu: {printerChoose.brand}</div>

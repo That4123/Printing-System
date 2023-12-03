@@ -5,16 +5,16 @@ import {useState, useEffect } from "react";
 import Modal from 'react-modal'
 import axios from "axios";
 
-function FileUpload({ value, onValueChange }){
+function FileUpload({ sharedState, setSharedState }){
     const [selectedFileName, setSelectedFileName] = useState('Chưa có file được chọn');
     const [permittedFileType, setPermittedFileType] = useState([])
     const getExtension = (filename) => {
         return filename.split('.').pop()
       }
-    
     const [errorMessage, setErrorMessage] = useState(null);
     const [checkFileType, setCheckFileType] = useState(true);
     const [checkFileSize, setCheckFileSize] = useState(true);
+    const handleChange = (event,name) => setSharedState(name, event.target.value);
     useEffect(() => {
         axios.get('/api/uploadFile/permittedFileType')
           .then((respond) => {
@@ -41,8 +41,8 @@ function FileUpload({ value, onValueChange }){
                     setCheckFileSize(false);
                   }
                   else {
-                    onValueChange('file_name', files[0].name);
-                    onValueChange('file_path', files[0].name);
+                    setSharedState('file_name', files[0].name);
+                    setSharedState('file_path', files[0].name);
                     setSelectedFileName(files[0].name);
                   }
                     
@@ -70,10 +70,10 @@ function FileUpload({ value, onValueChange }){
                     className="form-control"
                     id="formFileMultiple"
                     multiple
-                    onChange={handleFileChange}
+                    onChange={(e)=>{handleFileChange(e);handleChange(e,"file_name");}}
                     style={{ display: 'none' }}
                     />
-                    <span className="input-group-text" style = {{minWidth: '400px', backgroundColor: 'white'}}>{selectedFileName}</span>
+                    <span className="input-group-text" style = {{minWidth: '400px', backgroundColor: 'white'}}>{sharedState.file_name !=='' ? sharedState.file_name : selectedFileName}</span>
                 </div>
             </div>
             <Modal
