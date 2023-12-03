@@ -87,20 +87,20 @@ function ViewPermittedFileType() {
             <table className='table table-striped'>
                 <thead>
                     <tr>
-                        <th>Số thứ tự</th>
-                        <th>Loại file được phép in</th>
-                        <th>Kích thước tối đa</th>
-                        <th>Chỉnh sửa</th>
-                        <th>Xóa</th>
+                        <th className='text-center'>Số thứ tự</th>
+                        <th className='text-center'>Loại file được phép in</th>
+                        <th className='text-center'>Kích thước tối đa</th>
+                        <th className='text-center'>Chỉnh sửa</th>
+                        <th className='text-center'>Xóa</th>
                     </tr>
                 </thead>
                 <tbody>
                     {permittedFileTypes.map(permittedFileType => (
                         <tr key={permittedFileType.id}>
-                            <td>{permittedFileType.permitted_id}</td>
-                            <td>{permittedFileType.file_type}</td>
-                            <td>{permittedFileType.max_file_size}</td>
-                            <td>
+                            <td className='text-center'>{permittedFileType.permitted_id}</td>
+                            <td className='text-center'>{permittedFileType.file_type}</td>
+                            <td className='text-center'>{permittedFileType.max_file_size}</td>
+                            <td className='text-center'>
                                 <button className='modifyButton' onClick={() => handleEditFileType(permittedFileType.permitted_id)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-down-left" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M9.636 2.5a.5.5 0 0 0-.5-.5H2.5A1.5 1.5 0 0 0 1 3.5v10A1.5 1.5 0 0 0 2.5 15h10a1.5 1.5 0 0 0 1.5-1.5V6.864a.5.5 0 0 0-1 0V13.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
@@ -108,7 +108,7 @@ function ViewPermittedFileType() {
                                     </svg>
                                 </button>
                             </td>
-                            <td>
+                            <td className='text-center'>
                                 <button className='modifyButton' onClick={() => handleRemoveFileType(permittedFileType.permitted_id)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -153,7 +153,7 @@ function ViewPermittedFileType() {
                         </tr>
                         </tbody>
                     </table>
-                    <button className="btn btn-danger mt-2 mx-5" onClick={()=> handleAddPopupClose}>Huỷ</button>
+                    <button className="btn btn-danger mt-2 mx-5" onClick={handleAddPopupClose}>Huỷ</button>
                     <button className="btn btn-primary mt-2 mx-5" onClick={handleAddFileSubmit}>Xác nhận</button>
                     </form>
                 </div>
@@ -192,7 +192,7 @@ function ViewPermittedFileType() {
                         </tbody>
                     </table>
                     
-                    <button className="btn btn-danger mt-2 mx-5" onClick={()=> handleEditPopupClose}>Huỷ</button>
+                    <button className="btn btn-danger mt-2 mx-5" onClick={handleEditPopupClose}>Huỷ</button>
                     <button className="btn btn-primary mt-2 mx-5" onClick={handleEditFileSubmit}>Xác nhận</button>
                     </form>
                 </div>

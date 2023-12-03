@@ -215,6 +215,7 @@ function removePrinter(printer_id, controller) {
 function addNewPermittedFileType(permittedFileType, controller) {
     if (!checkNoEmpty(permittedFileType)) {
         controller({ code: 400, message: "Vui lòng nhập đủ thông tin loại file cần thêm!" }, null);
+        return;
     };
     let sql = "INSERT INTO permitted_file_type (file_type, max_file_size) VALUES (?, ?)";
     connect_DB.query(sql, [
