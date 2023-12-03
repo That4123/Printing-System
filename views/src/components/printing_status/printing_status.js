@@ -172,7 +172,7 @@ const PrintingStatus = () => {
   };
   return (<>
     <div className='pringting-status-ctn'>
-      <h1>Trạng thái in</h1>
+      <h1>Lịch sử in ấn</h1>
       <div className='btn-printingLog-ctn'>
           <button onClick={handleUpdateQueue}>Cập nhật hàng chờ</button>
       </div>
