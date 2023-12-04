@@ -36,7 +36,7 @@ function checkFileSize(req) {
     });
 }
 function getPermittedFileType(res) {
-    let sql = "SELECT file_type FROM permitted_file_type";
+    let sql = "SELECT file_type, max_file_size FROM permitted_file_type";
     connect_DB.query(sql, function (err, result, field) {
             if (err) {
                 res.status(500).json({ message: "Hệ thống gặp vấn đề. Vui lòng thử lại sau" });
@@ -48,7 +48,7 @@ function getPermittedFileType(res) {
                 
                 list = []
                 for (let i = 0; i < result.length; i++){
-                    list.push(result[i].file_type)
+                    list.push(result[i])
                 }
                 res.json({list: list})
                 

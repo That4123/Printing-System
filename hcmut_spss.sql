@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `permitted_file_type` (
 
 INSERT INTO `permitted_file_type` (`permitted_id`, `file_type`, `max_file_size`) VALUES
 (1, 'docx', 100),
-(2, 'pdf', 100),
+(2, 'pdf', 40),
 (3, 'xlsx', 100),
 (4, 'png', 200);
 
