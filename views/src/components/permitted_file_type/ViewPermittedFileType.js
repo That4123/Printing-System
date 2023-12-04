@@ -67,7 +67,7 @@ function ViewPermittedFileType() {
             permitted_id,
             file_type,
             max_file_size
-        }).then(axios.post('/api/viewPermittedFileType').then(response => setPermittedFileTypes(response.data)))
+        }).then(setReFresh(prev => prev + 1))
         .catch(error => console.error('Error fetching permitted file types:', error));
 
         handleEditPopupClose();
