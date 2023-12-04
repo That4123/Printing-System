@@ -93,7 +93,7 @@ const Report = () => {
                 pageStyle="print"
               />
             </div>
-            <div className="row mb-3 mt-4" ref={componentRef}>
+            <div className="row mb-3 mt-4">
               <div className="col">
                 <div className="card text-bg-primary">
                   <div class="card-header">Tổng yêu cầu</div>

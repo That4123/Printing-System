@@ -16,7 +16,6 @@ const PrintingRequest = () => {
 
   const handleButtonClick = (type) => {
     axios.post(`/api/printRequest/${request_id}`, {type: type}).then((res) => {
-      console.log(res)
       navigate('/printing-queue')
     }
     ).catch((err) => {
@@ -27,6 +26,7 @@ const PrintingRequest = () => {
   useEffect(() => {
     axios.get(`/api/printRequest/${request_id}`).then((res) => {
       if (res.status === 200) {
+        console.log(res)
         setRequest(res.data[0]);
       }
       else {
@@ -51,6 +51,7 @@ const PrintingRequest = () => {
       </div>
       <div className="w-100">
         <p className="mt-2 fs-3 fw-bold">File in</p>
+        <p className="fs- fw-semibold">{request.file_name}</p>
       </div>
       <div className="w-100">
         <p className="mt-2 fs-3 fw-bold">Thông tin</p>
