@@ -14,6 +14,7 @@ function FileUpload({ sharedState, setSharedState }){
     const [errorMessage, setErrorMessage] = useState(null);
     const [checkFileType, setCheckFileType] = useState(true);
     const [checkFileSize, setCheckFileSize] = useState(true);
+    const [fileType, setFileType] = useState("")
     const handleChange = (event,name) => setSharedState(name, event.target.value);
     useEffect(() => {
         axios.get('/api/uploadFile/permittedFileType')
@@ -39,11 +40,13 @@ function FileUpload({ sharedState, setSharedState }){
                   else if (response.data.message === "Kích thước tệp đạt quá giới hạn"){
                     event.target.files = null;
                     setCheckFileSize(false);
+                    setFileType(obj.file_type)
                   }
                   else {
                     setSharedState('file_name', files[0].name);
                     setSharedState('file_path', files[0].name);
                     setSelectedFileName(files[0].name);
+                    handleChange(event,"file_path");
                   }
                     
               })
@@ -70,7 +73,7 @@ function FileUpload({ sharedState, setSharedState }){
                     className="form-control"
                     id="formFileMultiple"
                     multiple
-                    onChange={(e)=>{handleFileChange(e);handleChange(e,"file_name");}}
+                    onChange={(e)=>{handleFileChange(e);}}
                     style={{ display: 'none' }}
                     />
                     <span className="input-group-text" style = {{minWidth: '400px', backgroundColor: 'white'}}>{sharedState.file_name !=='' ? sharedState.file_name : selectedFileName}</span>
@@ -88,7 +91,7 @@ function FileUpload({ sharedState, setSharedState }){
                 <div>Các loại tệp tin hợp lệ: </div>
                 <div style = {{display: 'flex', justifyContent: 'space-around', width: '50%', marginLeft: '25%'}}>
                     {permittedFileType.map((fileType, index) => (
-                        <div key={index}>{fileType}</div>
+                        <div key={index}>{fileType.file_type}</div>
                     ))}
                 </div>
             </Modal>
@@ -100,7 +103,17 @@ function FileUpload({ sharedState, setSharedState }){
                 ariaHideApp={false}
             >
                 <div>Thông báo</div>
-                <div>Kích thước đã đạt quá giới hạn</div>
+                <div>Kích thước đã đạt quá giới hạn 
+                {permittedFileType.map((file_Type, index) => (
+                  <div key={index}>
+                    {file_Type.file_type === fileType && (
+                      <div>
+                        Loại file {file_Type.file_type} được phép kích thước tối đa {file_Type.max_file_size} MB
+                      </div>
+                    )}
+                  </div>
+                ))}
+                </div>
                 
                
             </Modal>

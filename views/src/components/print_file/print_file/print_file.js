@@ -185,7 +185,7 @@ const PrintingFile = () => {
                 <button className='configbtn' onClick={() => setCurrentPage('config')}>Cấu hình in</button>
             </span>
             <span className='config-printbtn-span'>
-                <button className='config-printbtn' onClick={openModal}> In! </button>
+                <button className='config-printbtn' onClick={openModal}> In </button>
                     <Modal className={"popup-confirm-config"} overlayClassName={"cfm-config-ctn"}
                         isOpen={isModalOpen}
                         onRequestClose={closeModal}
