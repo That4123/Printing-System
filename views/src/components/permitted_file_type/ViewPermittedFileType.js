@@ -26,7 +26,9 @@ function ViewPermittedFileType() {
 
     useEffect(() => {
         axios.post('/api/viewPermittedFileType')
-        .then(response => {console.log(response.data); setPermittedFileTypes(response.data)})
+        .then(response => {
+            console.log(response.data); setPermittedFileTypes(response.data)
+        })
         .catch(error => console.error('Error fetching permitted file types:', error));
     }, [reFresh]);
 
@@ -47,7 +49,6 @@ function ViewPermittedFileType() {
         }).then(response => {
             setReFresh(prev => prev + 1)
         }).catch(error => console.error('Error fetching permitted file types:', error));
-
         handleAddPopupClose();
     };
     
@@ -67,9 +68,10 @@ function ViewPermittedFileType() {
             permitted_id,
             file_type,
             max_file_size
-        }).then(setReFresh(prev => prev + 1))
+        }).then(response => {
+            setReFresh(prev => prev + 1)
+        })
         .catch(error => console.error('Error fetching permitted file types:', error));
-
         handleEditPopupClose();
     }
 
