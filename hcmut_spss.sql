@@ -88,7 +88,9 @@ INSERT INTO `printer` (`printer_id`, `brand`, `model`, `description`, `campusNam
 (5, 'Epson', 'ESP030', 'Mới, không lem mực', '2', '403', 'H3', 'Đang hoạt động'),
 (6, 'Canon', 'G1737', 'Mới, không lem mực', '1', '101', 'B7', 'Đang hoạt động'),
 (7, 'HP', '2T394A', 'Mới, không lem mực', '2', '303', 'H6', 'Đang hoạt động'),
-(8, 'Canon', 'LBP 5023', 'Mới, không lem mực', '1', '504', 'B1', 'Đang hoạt động');
+(8, 'Canon', 'LBP 5023', 'Mới, không lem mực', '1', '504', 'B1', 'Đang hoạt động'),
+(9, 'Xerox', 'XR1745', 'Mới, không lem mực', '2', '302', 'H6', 'Đang hoạt động'),
+(10, 'Canon', 'LBP 5024', 'Mới, không lem mực', '1', '501', 'B1', 'Đang hoạt động');
 
 -- --------------------------------------------------------
 

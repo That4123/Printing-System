@@ -9,6 +9,25 @@ import Modal from 'react-modal'
 import axios from 'axios';
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
+const ModalNoti=({isModalNotiOpen,setModalNoti,message})=>{
+  return(
+    <Modal
+      className={"popup-complete-config"}
+      overlayClassName={"complete-config-ctn"}
+      isOpen={isModalNotiOpen}
+      onRequestClose={() => setModalNoti(false)}
+      ariaHideApp={false}
+    >
+      <h2>Thông báo</h2>
+      <span className="span-complete-config">
+        <p className="complete-noti-content">{message}</p>
+        <button onClick={() => setModalNoti(false)} className="complete-noti-btn">
+          Đóng
+        </button>
+      </span>
+    </Modal>
+  )
+}
 const printer_detail_cfm=(printerDetail)=>{
   return(
     <>
@@ -51,7 +70,10 @@ const print_config_cfm=(print_request)=>{
 const PrintingFile = () => {
   const token = cookies.get("TOKEN");
   const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState('upload');
+  const [isModalNotiOpen,setModalNoti]=useState(false);
+  const [responseMessage,setResponseMessage]=useState('');
   const [sharedState, setSharedState] = useState({
     printer_id: '',
     file_path: '',
@@ -72,10 +94,10 @@ const PrintingFile = () => {
   const renderPage = () => {
     switch (currentPage) {
       case 'upload':
-        return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
+        return <FileUpload sharedState={sharedState} setSharedState={handleValueChange}/>;
         break;
         case 'printer':
-         return <ChoosePrinter value={sharedState.printer_id} onValueChange={handleValueChange}/>;
+         return <ChoosePrinter sharedState={sharedState} setSharedState={handleValueChange}/>;
         break;
       case 'config':
         return <PrintingConfig sharedState={sharedState}
@@ -83,7 +105,7 @@ const PrintingFile = () => {
           handleSubmit={handleSubmit}/>;
         break;
       default:
-        return <FileUpload value={[sharedState.file_name, sharedState.file_path]} onValueChange={handleValueChange}/>;
+        return <FileUpload value={sharedState} onValueChange={handleValueChange}/>;
     }
   };  
   const [printerDetail,setPrinterDetail ]=useState(0);
@@ -106,8 +128,6 @@ const PrintingFile = () => {
   const [isModalCompleteOpen, setModalCompleteOpen] = useState(false);
 
   const handleComplete = () =>{
-      // onValueChange('paper_size',paper_size);
-      // onValueChange('is_double_side',(is_double_side===2));
     axios.post("/api/printFile/makeUpdateRequest", {
       sharedState,
     },{
@@ -116,13 +136,15 @@ const PrintingFile = () => {
         }
     })
         .then((response) => {
+            console.log(111);
             setCompleteState(sharedState);
-            setModalCompleteOpen(true);
-            setErrorMessage(null);
+            setResponseMessage(response.data.message);
+            setModalNoti(true);
         })
         .catch((error) => {
           if (error.response) {
-            setErrorMessage(error.response.data.message);
+            setResponseMessage(error.response.data.message);
+            setModalNoti(true);
           }
         })
       
@@ -132,24 +154,24 @@ const PrintingFile = () => {
   const handleSubmit = () => {
     if (errorMessage) return;
     axios.post("/api/printFile/makePrintRequest", {
-      completeState,
+      completeState,sharedState
     },{
         headers: {
             Authorization: `Bearer ${token}`
         }
     })
         .then((response) => {
-            setErrorMessage(null);
+          setResponseMessage(response.data.message);
+          setModalNoti(true);
         })
         .catch((error) => {
           if (error.response) {
-            setErrorMessage(error.response.data.message);
+
+            setResponseMessage(error.response.data.message);
+            setModalNoti(true);
           }
         })
   }
-
-  
-
   return (
     <div>
         <div className="title-config-container">
@@ -185,35 +207,21 @@ const PrintingFile = () => {
         </div>
       <div>
         {renderPage()}
-        {currentPage === 'config' && (
+        {
           <div className='config-container'>
             <div className="attribute-config side-page-config">
               <button value="1" className="back-btn">
-                Quay lại
+                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Quay lại
+                </Link>
               </button>
               <button value="2" className="complete-btn" onClick={() => handleComplete()}>
                 Hoàn thành
               </button>
-              <Modal
-                className={"popup-complete-config"}
-                overlayClassName={"complete-config-ctn"}
-                isOpen={isModalCompleteOpen}
-                onRequestClose={() => setModalCompleteOpen(false)}
-                ariaHideApp={false}
-              >
-                <h2>Thông báo</h2>
-                <span className="span-complete-config">
-                  <p className="complete-noti-content">Thiết lập cấu hình in thành công</p>
-                  <button onClick={() => setModalCompleteOpen(false)} className="complete-noti-btn">
-                    OK
-                  </button>
-                </span>
-              </Modal>
             </div>
-            <p>{errorMessage ? errorMessage : ""}</p>
           </div>
-        )}
-        
+        }
+        <ModalNoti isModalNotiOpen={isModalNotiOpen} setModalNoti={setModalNoti} message={responseMessage} />
       </div>
     </div>
   );

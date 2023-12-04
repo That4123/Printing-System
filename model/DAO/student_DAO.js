@@ -71,7 +71,7 @@ function makePrintRequest(req, res) {
                         callback(err, null);
                     }
                     else {
-                        res.status(200).json({ message: "success make print request" });
+                        res.status(200).json({ message: "Bạn thành công gửi yêu cầu in" });
                     }
                 });
 
@@ -154,9 +154,34 @@ function getConfigDetail(print_request_id, callback) {
         }
     });
 }
-function checkNoEmpty(obj) {
+function convertKeyToString(key) {
+    switch (key) {
+        case 'printer_id':
+            return "bấm \'Chọn máy in\' để chọn máy in";
+        case 'file_path':
+            return "bấm \'Tải file lên\' để chọn tải file in";
+        case 'file_name':
+            return "bấm \'Tải file lên\' để chọn tải file in";
+        case 'paper_size':
+            return "chọn khổ giấy ở mục \'Cấu hình in\'";
+        case 'is_double_side':
+            return "chọn \'In một mặt\' hoặc \'In hai mặt\' ở mục \'Cấu hình in\'";
+        case 'number_of_copies':
+            return "điền số bản in muốn in ở mục \'Cấu hình in\'";
+        case 'print_type':
+            return "chọn loại in ở mục \'Cấu hình in\'";
+        case 'pages_to_print':
+            return "điền trang in ở mục \'Cấu hình in\'";
+        default:
+            return key;
+    }
+  }
+function checkNoEmpty(obj,res) {
+    console.log(obj);
     for (let key in obj) {
         if (obj[key] === undefined || obj[key] === null || obj[key] === "") {
+            console.log(key);
+            res.status(400).json({message:"Bạn vui lòng "+convertKeyToString(key)});
             return false;
         }
     }
