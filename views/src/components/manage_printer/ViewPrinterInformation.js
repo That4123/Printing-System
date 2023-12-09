@@ -175,7 +175,7 @@ function ViewPrinterInfomation () {
                 <label>Trạng thái:</label> 
                   <div className='Edit-status'>
                     <span>{printerStatus}</span>
-                    <button  className ='btn1 change-btn' onClick={() => handleChangeStatus(selectedPrinter)}>
+                    <button  className ='btn1' onClick={() => handleChangeStatus(selectedPrinter)}>
                       {printerStatus ==='Đang hoạt động' ? 'Tắt' : 'Bật'}
                     </button>
                   </div>
