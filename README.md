@@ -3,11 +3,6 @@
 
 ***(Cập nhật đầu tiên 16/11/2023): Cập nhật hệ thống đăng nhập đăng ký, sử dụng cơ chế tokenization***
 
-## Document cho project
-Link task 1,2 (chỉ đọc): [Task 1,2](https://www.overleaf.com/read/sqsqqtdhmbjd#7ccd49)
-
-Link task 3,4,5 (chỉ đọc): [Task 3,4,5](https://www.overleaf.com/read/myrmgrdxngpx#c45e67)
-
 ## Setup ngay sau khi clone project lần đầu
 ### Setup cơ sở dữ liệu MySQL và khởi chạy server MySQL trên máy
 Trước hết, ***vui lòng cài đặt MySQL lên máy nếu chưa có, rồi nhập file `hcmut_spss.sql` vào***. Nếu chưa biết cách cài đặt thì đây là hướng dẫn:
